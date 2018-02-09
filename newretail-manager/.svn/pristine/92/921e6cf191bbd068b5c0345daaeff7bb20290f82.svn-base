@@ -1,0 +1,30 @@
+package com.newretail.mapper;
+
+import com.newretail.pojo.OrderToGoodsTable;
+import com.newretail.pojo.OrderToGoodsTableExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface OrderToGoodsTableMapper {
+    int countByExample(OrderToGoodsTableExample example);
+
+    int deleteByExample(OrderToGoodsTableExample example);
+
+    int deleteByPrimaryKey(String id);
+
+    int insert(OrderToGoodsTable record);
+
+    int insertSelective(OrderToGoodsTable record);
+
+    List<OrderToGoodsTable> selectByExample(OrderToGoodsTableExample example);
+
+    OrderToGoodsTable selectByPrimaryKey(String id);
+
+    int updateByExampleSelective(@Param("record") OrderToGoodsTable record, @Param("example") OrderToGoodsTableExample example);
+
+    int updateByExample(@Param("record") OrderToGoodsTable record, @Param("example") OrderToGoodsTableExample example);
+
+    int updateByPrimaryKeySelective(OrderToGoodsTable record);
+
+    int updateByPrimaryKey(OrderToGoodsTable record);
+}

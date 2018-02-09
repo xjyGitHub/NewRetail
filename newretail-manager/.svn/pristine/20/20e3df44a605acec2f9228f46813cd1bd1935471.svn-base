@@ -1,0 +1,7 @@
+package com.newretail.service;
+
+import com.newretail.pojo.Test;
+
+public interface TestUserService {
+	public Test findTestUserName(int id);
+}

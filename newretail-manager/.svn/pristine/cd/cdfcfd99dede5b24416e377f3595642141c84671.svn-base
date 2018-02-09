@@ -1,0 +1,155 @@
+package com.newretail.controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.newretail.common.utils.CookieUtils;
+import com.newretail.common.utils.ExceptionUtil;
+import com.newretail.common.utils.NewRetailResult;
+import com.newretail.common.utils.PrimaryKeyUtils;
+import com.newretail.common.utils.TimeUtils;
+import com.newretail.mapper.UserSellerTableMapper;
+import com.newretail.pojo.GoodsTable;
+import com.newretail.pojo.UserSellerTable;
+import com.newretail.pojo.UserSellerTableExample;
+import com.newretail.pojo.UserSellerTableExample.Criteria;
+import com.newretail.pojo.UserTable;
+import com.newretail.service.GoodsManagerService;
+import com.newretail.service.UserService;
+
+@Controller
+@RequestMapping("/goods")
+public class GoodsManagerController {
+
+	@Autowired
+	private GoodsManagerService goodsManagerService;
+
+	@Autowired
+	private UserSellerTableMapper userSellerTableMapper;
+
+	@Autowired
+	private UserService userService;
+
+	@RequestMapping("add")
+	@ResponseBody
+	public NewRetailResult addGoodsByGoods(@RequestBody GoodsTable goods, HttpServletRequest request) {
+		GoodsTable goodsTable = new GoodsTable();
+		String token = CookieUtils.getCookieValue(request, "NEWRETAIL_LOGIN");
+		UserTable userByToken = null;
+		try {
+			userByToken = userService.getUserByToken(token);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+
+		}
+		String userId = userByToken.getId();
+		String goodsName = goods.getGoodsName();
+		String goodsPhoto = goods.getGoodsPhoto();
+		String goodsPric = goods.getGoodsPrice();
+		String discount = goods.getDiscount();
+		String goodsType = goods.getGoodsType();
+		Integer amount = goods.getAmount();
+		String startime = TimeUtils.getTime();
+		String lastime = TimeUtils.getTime();
+		Integer stock = goods.getStock();
+		String goodsStatus = "1";
+		String sellerId = "";
+		if (userId != null && userId.length() != 0) {
+			try {
+				UserSellerTableExample tableExample = new UserSellerTableExample();
+				Criteria userCritera = tableExample.createCriteria();
+				userCritera.andUserIdEqualTo(userId);
+				List<UserSellerTable> list = userSellerTableMapper.selectByExample(tableExample);
+				if (list != null && list.size() > 0) {
+					UserSellerTable userSellerTable = list.get(0);
+					sellerId = userSellerTable.getId();
+				}
+			} catch (Exception e) {
+
+				return NewRetailResult.build(-1, "userId" + ExceptionUtil.getStackTrace(e));
+			}
+		} else {
+			return NewRetailResult.build(-1, "登陆失效");
+		}
+		if (sellerId==null|| sellerId== "") {
+			return NewRetailResult.build(0, "登陆失效");
+		}
+
+	
+		if (goodsName == null || goodsName== "") 
+			return NewRetailResult.build(0, "商品名不能为空");
+		else
+			goodsTable.setGoodsName(goodsName);
+		if (goodsPhoto == null || goodsPhoto == "")
+			return NewRetailResult.build(0, "请选择商品图片");
+		else
+			goodsTable.setGoodsPhoto(goodsPhoto);
+		
+		if (goodsPric != null)
+			goodsTable.setGoodsPrice(goodsPric);
+		else
+			return NewRetailResult.build(0, "请设置商品价格");
+		if (discount != null)
+			goodsTable.setDiscount(discount);
+		else
+			return NewRetailResult.build(0, "折扣为空");
+		if (goodsType != null && goodsType != "")
+			goodsTable.setGoodsType(goodsType);
+		else
+			return NewRetailResult.build(0, "商品类型不能为空");
+		if (amount != null)
+			goodsTable.setAmount(amount);
+		else
+			return NewRetailResult.build(0, "后台异常，请联系管理员");
+		if (startime != null && startime != "")
+			goodsTable.setStartime(startime);
+		else
+			return NewRetailResult.build(0, "startime为空");
+		if (lastime != null && lastime != "")
+			goodsTable.setLastime(lastime);
+		else
+			return NewRetailResult.build(0, "lastime为空");
+		if (stock != null)
+			goodsTable.setStock(stock);
+		else
+			return NewRetailResult.build(0, "库存不能为空");
+		if (goodsStatus != null && goodsStatus != "")
+			goodsTable.setGoodsStatus(goodsStatus);
+		else
+			return NewRetailResult.build(0, "货物状态");
+		if (sellerId != null && sellerId != "")
+			goodsTable.setSellerId(sellerId);
+		else
+			return NewRetailResult.build(0, "sellerId为空");
+		// goodsTable.setAuditorId(amount);
+		try {
+			int status = goodsManagerService.addGoodsByGoods(goods);
+			if (status > 0) {
+				return NewRetailResult.ok();
+			} else {
+				return NewRetailResult.build(0, "添加失败");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return NewRetailResult.build(0, ExceptionUtil.getStackTrace(e));
+		}
+	}
+
+	/**
+	 * @see: 验证Object数组类型的是否为空
+	 */
+	public static boolean isNullorEmpty(Object[] obj) {
+		if ((obj == null) || (obj.length == 0)) {
+			return true;
+		}
+		return false;
+	}
+
+}

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newretail.mapper.custom.InterfaceMapper">
+	 
+	<resultMap id="MerchantInfoMap" type="com.newretail.pojo.custom.MerchantInfo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+		<result column="shop_name" property="shopName" jdbcType="INTEGER" />
+		<result column="pic_url" property="picUrl" jdbcType="INTEGER" />
+		<result column="shop_address" property="shopAddress" jdbcType="INTEGER" />
+		<result column="longitude" property="longitude" jdbcType="INTEGER" />
+		<result column="latitude" property="latitude" jdbcType="INTEGER" />
+		<result column="distance" property="distance" jdbcType="INTEGER" />
+		<result column="send_price" property="sendPrice" jdbcType="INTEGER" />
+		<result column="order_lead_time" property="orderLeadTime"
+			jdbcType="INTEGER" />
+		<result column="phone" property="phone" jdbcType="INTEGER" />
+		<result column="rating" property="rating" jdbcType="INTEGER" />
+		<result column="rating_count" property="ratingCount" jdbcType="INTEGER" />
+		<result column="recent_order_num" property="recentOrderNum"
+			jdbcType="INTEGER" />
+		<result column="business_license_url" property="businessLicenseUrl"
+			jdbcType="INTEGER" />
+		<result column="business_license_id" property="businessLicenseId"
+			jdbcType="INTEGER" />
+		<result column="piecewise_agent_fee" property="piecewiseAgentFee"
+			jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="GoodsTableCustomMap" type="com.newretail.pojo.custom.GoodsTableCustom">
+		<result column="goods_id" property="goodsId" jdbcType="VARCHAR" />
+		<result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+		<result column="goods_photo" property="goodsPhoto" jdbcType="VARCHAR" />
+		<result column="goods_price" property="goodsPrice" jdbcType="VARCHAR" />
+		<result column="discount" property="discount" jdbcType="VARCHAR" />
+		<result column="goods_type" property="goodsType" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+		<result column="stock" property="stock" jdbcType="INTEGER" />
+		<result column="goods_status" property="goodsStatus" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="auditor_id" property="auditorId" jdbcType="VARCHAR" />
+		<result column="sales" property="sales" jdbcType="INTEGER" />
+		<result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+		<result column="goods_sale_price" property="goodsSalePrice"	jdbcType="VARCHAR" />
+		<result column="packing_fee" property="packingFree" jdbcType="VARCHAR" />
+		<collection property="goodsSize" ofType="com.newretail.pojo.custom.GoodsSize">
+		    <result column="goods_size_name" property="sizeName" jdbcType="VARCHAR" />
+		    <result column="goods_size_price" property="sizePrice" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	
+	<select id="getMerchantList" parameterType="map" resultMap="MerchantInfoMap">
+
+		
+	</select>
+
+	<select id="getMerchantGoodsList" parameterType="map"
+		resultMap="GoodsTableCustomMap">
+		select
+			g.goods_id,
+			g.goods_name,
+			g.goods_photo,
+			g.goods_price ,
+			g.goods_sale_price ,
+			g.discount ,
+			g.goods_status ,
+			g.sales ,
+			g.stock ,
+			g.packing_fee ,
+			s.goods_size_name,
+			s.goods_size_price
+		from
+			goods_table g left join goods_size_table s on g.goods_id=s.goods_id
+		<where>
+			g.merchant_id = #{shopId} 
+			<if test="goodsId != null and goodsId !=''" >
+				and g.goods_id=#{goodsId} 
+			</if>
+			<if test="goodsName != null and goodsName !=''" >
+				and g.goods_name=#{goodsName}
+			</if>
+			<if test="goodsType != null and goodsType !=''" >
+				and g.goods_type=#{goodsType}
+			</if>
+		</where>			
+	</select>
+
+	<select id="getGoodsTypeList" parameterType="map" resultType="map">
+		select
+			distinct goods_type "goodsType"
+		from
+			goods_table
+		where merchant_id=#{shopId}
+	</select>
+
+	<select id="getEvaluateList" parameterType="map" resultType="map">
+		select
+			g.evaluate_id "evaluateId",g.order_id "orderId" ,g.user_id "userId",u.username
+			"username",g.seller_id "shopId",g.content "content",g.rating "rating"
+			,g.eval_time "evalTime"
+		from
+			goods_evaluation_table g,user_table u
+		where
+			g.seller_id=#{shopId} and g.user_id = u.id
+
+	</select>
+
+</mapper>

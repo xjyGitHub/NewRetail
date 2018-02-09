@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newretail.mapper.ShopActivitiesTableMapper" >
+  <resultMap id="BaseResultMap" type="com.newretail.pojo.ShopActivitiesTable" >
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="attribute" property="attribute" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="icon_color" property="iconColor" jdbcType="VARCHAR" />
+    <result column="icon_name" property="iconName" jdbcType="VARCHAR" />
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="is_exclusive_with_food_activity" property="isExclusiveWithFoodActivity" jdbcType="SMALLINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="tips" property="tips" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    shop_id, attribute, description, icon_color, icon_name, id, is_exclusive_with_food_activity, 
+    name, tips, type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newretail.pojo.ShopActivitiesTableExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_activities_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.newretail.pojo.ShopActivitiesTableExample" >
+    delete from shop_activities_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newretail.pojo.ShopActivitiesTable" >
+    insert into shop_activities_table (shop_id, attribute, description, 
+      icon_color, icon_name, id, 
+      is_exclusive_with_food_activity, name, tips, 
+      type)
+    values (#{shopId,jdbcType=VARCHAR}, #{attribute,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{iconColor,jdbcType=VARCHAR}, #{iconName,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, 
+      #{isExclusiveWithFoodActivity,jdbcType=SMALLINT}, #{name,jdbcType=VARCHAR}, #{tips,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.newretail.pojo.ShopActivitiesTable" >
+    insert into shop_activities_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="attribute != null" >
+        attribute,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="iconColor != null" >
+        icon_color,
+      </if>
+      <if test="iconName != null" >
+        icon_name,
+      </if>
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="isExclusiveWithFoodActivity != null" >
+        is_exclusive_with_food_activity,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="tips != null" >
+        tips,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="attribute != null" >
+        #{attribute,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="iconColor != null" >
+        #{iconColor,jdbcType=VARCHAR},
+      </if>
+      <if test="iconName != null" >
+        #{iconName,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="isExclusiveWithFoodActivity != null" >
+        #{isExclusiveWithFoodActivity,jdbcType=SMALLINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tips != null" >
+        #{tips,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newretail.pojo.ShopActivitiesTableExample" resultType="java.lang.Integer" >
+    select count(*) from shop_activities_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update shop_activities_table
+    <set >
+      <if test="record.shopId != null" >
+        shop_id = #{record.shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attribute != null" >
+        attribute = #{record.attribute,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iconColor != null" >
+        icon_color = #{record.iconColor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iconName != null" >
+        icon_name = #{record.iconName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isExclusiveWithFoodActivity != null" >
+        is_exclusive_with_food_activity = #{record.isExclusiveWithFoodActivity,jdbcType=SMALLINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tips != null" >
+        tips = #{record.tips,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update shop_activities_table
+    set shop_id = #{record.shopId,jdbcType=VARCHAR},
+      attribute = #{record.attribute,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      icon_color = #{record.iconColor,jdbcType=VARCHAR},
+      icon_name = #{record.iconName,jdbcType=VARCHAR},
+      id = #{record.id,jdbcType=VARCHAR},
+      is_exclusive_with_food_activity = #{record.isExclusiveWithFoodActivity,jdbcType=SMALLINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      tips = #{record.tips,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

@@ -1,0 +1,44 @@
+package com.newretail.common.utils;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+/**
+ * 加解密工具
+ * @author Yongjie
+ *
+ */
+public class EncrypationUtils {
+	/**
+	 * md5加密
+	 * @param express 明文
+	 * @return 返回加密后的密文
+	 */
+	public static String md5Hex(String express) {
+		return DigestUtils.md5Hex(express);
+	}
+	/**
+	 * SHA1加密
+	 * @param express 明文
+	 * @return 返回加密后的密文
+	 */
+	public static String shaHex(String express) {
+		return DigestUtils.sha1Hex(express);
+	}
+	
+	/**
+	 * Base64编码
+	 * @param express 明文
+	 * @return 返回加密后的密文
+	 */
+	public static String base64Hex(String express) {
+		return Base64.encodeBase64String(express.getBytes());
+	}
+	/**
+	 * Base64解码
+	 * @param base64Str 传入加密过的Base64字符串
+	 * @return
+	 */
+	public static String base64Decrypt(String base64Str) {
+		return new String(Base64.decodeBase64(base64Str));
+	}
+}

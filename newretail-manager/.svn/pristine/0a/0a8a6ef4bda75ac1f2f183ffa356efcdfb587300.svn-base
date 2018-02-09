@@ -1,0 +1,4 @@
+jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://39.108.94.35:3306/newretail?characterEncoding=utf-8
+jdbc.username=testuser
+jdbc.password=testuser123456

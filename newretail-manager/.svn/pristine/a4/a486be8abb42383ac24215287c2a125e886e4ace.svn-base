@@ -1,0 +1,196 @@
+package com.newretail.service;
+
+import java.util.List;
+
+import com.newretail.pojo.UserAdminTable;
+import com.newretail.pojo.UserAuthenticationTable;
+import com.newretail.pojo.UserAuthenticationTableExample;
+import com.newretail.pojo.UserDeliveryTable;
+import com.newretail.pojo.UserSellerTable;
+import com.newretail.pojo.UserTable;
+/**
+ * 用户管理接口
+ * @author Yongjie
+ *
+ */
+public interface UserService {
+	/**
+	 * 添加普通用户
+	 * @param user
+	 * @return int 1 添加成功
+	 */
+	public int addUser(UserTable user) throws Exception;
+	
+	/**
+	 * 添加商户
+	 * @param user
+	 * @param userSeller
+	 * @param userAuthentication
+	 * @return
+	 * @throws Exception
+	 */
+	public int addUser(UserTable user,UserSellerTable userSeller,UserAuthenticationTable userAuthentication) throws Exception;
+	
+	/**
+	 * 
+	 * @param userAuthentucation
+	 * @return
+	 * @throws Exception
+	 */
+	public int addUserAuthentication(UserAuthenticationTable userAuthentucation) throws Exception;
+	/**
+	 * 
+	 * @param userDelivery
+	 * @return
+	 * @throws Exception
+	 */
+	public int addUserDelivery(UserDeliveryTable userDelivery) throws Exception;
+	
+	/**
+	 * 
+	 * @param userAdmin
+	 * @return
+	 * @throws Exception
+	 */
+	public int addUserAdmin(UserAdminTable userAdmin) throws Exception;
+	
+	/**
+	 * 
+	 * @param userAuthentucation
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateUserAuthentication(UserAuthenticationTable userAuthentucation) throws Exception;
+
+	/**
+	 * 
+	 * @param userAdmin
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateUserAdmin(UserAdminTable userAdmin) throws Exception;
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateUser(UserTable user) throws Exception;
+	
+	/**
+	 * 
+	 * @param userDelivery
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateUserDeliver(UserDeliveryTable userDelivery) throws Exception;
+	/**
+	 * 
+	 * @param userSeller
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateUserSeller(UserSellerTable userSeller) throws Exception;
+	
+	/**
+	 * 
+	 * @param userAuthentication
+	 * @return
+	 * @throws Exception
+	 */
+	public int updatUserAuthentication(UserAuthenticationTable userAuthentication) throws Exception;
+	
+	/**
+	 * 查询用户
+	 * @param user
+	 * @return List<UserTable>
+	 */
+	public List<UserTable> findUser(UserTable user) throws Exception;
+	
+	
+	/**
+	 * 查询商户
+	 * @param UserSellerTable
+	 * @return
+	 */
+	public List<UserSellerTable> findUserSeller(UserSellerTable userSeller) throws Exception;
+	
+	/**
+	 * 更加Id查询商户
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public UserSellerTable findUserSeller(String id) throws Exception;
+	
+	/**
+	 * 
+	 * @param userAuthentucation
+	 * @return
+	 * @throws Exception
+	 */
+	public List<UserAuthenticationTable> findUserAuthentication(UserAuthenticationTable userAuthentucation) throws Exception;
+
+	/**
+	 * 
+	 * @param userDelivery
+	 * @return
+	 * @throws Exception
+	 */
+	public List<UserDeliveryTable> findUserDeliver(UserDeliveryTable userDelivery) throws Exception;
+	
+	/**
+	 * 
+	 * @param userAdmin
+	 * @return
+	 * @throws Exception
+	 */
+	public List<UserAdminTable> findUserAdmin(UserAdminTable userAdmin) throws Exception;
+	
+
+	/**
+	 * 
+	 * @param id 主键
+	 * @return UserTable
+	 */
+	public UserTable findUser(String id) throws Exception;
+
+	public int updateUserAuthentication(UserAuthenticationTable userAuthentucation, UserAuthenticationTableExample example)
+			throws Exception;
+	/**
+	 * 
+	 * updatUserAuthentication:(这里用一句话描述这个方法的作用). <br/>
+	 *
+	 * @author Yongjie
+	 * @param userAuthentication
+	 * @param example
+	 * @return
+	 * @throws Exception
+	 * @since JDK 1.8
+	 */
+	public int updatUserAuthentication(UserAuthenticationTable userAuthentication, UserAuthenticationTableExample example)
+			throws Exception;
+	/**
+	 * 
+	 * findUserAdmin:(这里用一句话描述这个方法的作用). <br/>
+	 *
+	 * @author Yongjie
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 * @since JDK 1.8
+	 */
+	public UserAdminTable findUserAdmin(String id) throws Exception;
+	/**
+	 * 根据Token验证用户信息
+	 * getUserByToken:(这里用一句话描述这个方法的作用). <br/>
+	 *
+	 * @author Yongjie
+	 * @param token
+	 * @return
+	 * @throws Exception
+	 * @since JDK 1.8
+	 */
+	public UserTable getUserByToken(String token) throws Exception;;
+	
+}

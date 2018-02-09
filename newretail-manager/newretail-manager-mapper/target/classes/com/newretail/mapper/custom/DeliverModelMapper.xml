@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newretail.mapper.custom.DeliverModelMapper" >
+  
+<!-- test -->
+<select id="test" parameterType="map" resultType="map">
+ 	select 
+		deliver.order_id "orderId",
+		o.order_time "orderTime",
+		sender.sender_name "senderName",
+		deliver.deliver_status "deliverStatus",
+		deliver.start_time "startTime",
+		deliver.end_time "endTime"
+	from
+		deliver_info_table deliver,user_delivery_table sender,order_table o
+	<where>
+		<![CDATA[
+		deliver.sender_id = sender.user_id and deliver.order_id = o.order_id
+			  and o.order_time <= #{queryTime}
+		]]> 
+	</where>
+ </select> 
+<!-- 点击配送情况，查询当日订单(按时间倒序排列) -->
+<select id="getAllDeliverListToday" parameterType="string" resultType="map">
+ 	select 
+		deliver.order_id "orderId",
+		o.order_time "orderTime",
+		sender.sender_name "senderName",
+		deliver.deliver_status "deliverStatus",
+		deliver.start_time "startTime",
+		deliver.end_time "endTime"
+	from
+		deliver_info_table deliver,user_delivery_table sender,order_table o
+	<where>
+		<![CDATA[
+		deliver.sender_id = sender.user_id and deliver.order_id = o.order_id
+			  and o.order_time <= #{queryTime}
+		]]> 
+	</where>
+ </select> 
+ 
+ <!-- 商家按配送状态+时间查询 -->
+  <select id="getDeliverListByStatus" parameterType="map" resultType="map">
+ 	select 
+		d.order_id "orderId",
+		o.order_time "orderTime",
+		s.sender_name "senderName",
+		d.deliver_status "deliverStatus",
+		d.start_time "startTime",
+		d.end_time "endTime"
+	from
+		deliver_info_table d,user_delivery_table s,order_table o
+	<where>
+		d.sender_id = s.user_id and d.order_id = o.order_id
+		
+		 <if test="deliverStatus != null and deliverStatus != ''">
+			and d.deliver_status = #{deliverStatus}
+		</if>
+		<if test="queryTime != null and queryTime != ''">
+			<![CDATA[
+		 		and o.order_time <= #{queryTime}
+		 	]]> 
+		</if>
+	</where>
+ </select>
+ 
+ <!-- 管理员按照条件查询 -->
+   <select id="getDeliverListByCondition" parameterType="map" resultType="map">
+ 	select 
+		u.id "shopId",
+		u.shop_name "shopName",
+		d.order_id "orderId",
+		o.order_time "orderTime",
+		s.sender_name "senderName",
+		d.deliver_status "deliverStatus",
+		d.start_time "startTime",
+		d.end_time "endTime"
+	from
+		deliver_info_table d,user_delivery_table s,order_table o,user_seller_table u
+	<where>
+		d.sender_id = s.user_id and d.order_id = o.order_id and u.id = o.merchant_id
+		<if test="shopId != null and shopId != ''">
+			and o.merchant_id = #{shopId}
+		</if>
+		<if test="orderId != null and orderId != ''">
+			and o.order_id = #{orderId}
+		</if>
+		<if test="deliverStatus != null and deliverStatus != ''">
+			and d.deliver_status = #{deliverStatus}
+		</if>
+		<if test="startTime != null and startTime != ''">
+			<![CDATA[
+			and o.order_Time >= #{startTime}
+			]]>
+		</if>
+		<if test="endTime != null and endTime != ''">
+			<![CDATA[
+			and o.order_Time <= #{endTime}
+			]]>
+		</if>
+	<!-- 	 <if test="deliverStatus != null and deliverStatus != ''">
+			and d.deliver_status = #{deliverStatus}
+		</if>
+		<if test="queryTime != null and queryTime != ''">
+			<![CDATA[
+		 		and o.order_time <= #{queryTime}
+		 	]]> 
+		</if> -->
+	</where>
+ </select>
+ 
+ 	<resultMap type="com.newretail.pojo.custom.DeliverInfoAddTable" id="map">
+    <result property="id" column="id"  />
+    <result property="orderId" column="order_id"  />
+    <result property="senderId" column="sender_id" />
+    <result property="deliverStatus" column="deliver_status" />
+    <result property="senderPhone" column="sender_phone" />
+    <result property="startTime" column="start_time" />
+    <result property="endTime" column="end_time" />
+    <result property="deliverAddress" column="deliver_adddress" />
+    <result property="receiverPhone" column="reveive_phone" />
+	</resultMap> 
+ 
+</mapper>

@@ -1,0 +1,49 @@
+package com.newretail.service;
+
+import java.util.List;
+
+import com.newretail.pojo.GoodsTable;
+
+/**
+ * 商品管理
+ * @author Yongjie
+ *
+ */
+public interface GoodsManagerService {
+	/**
+	 * 
+	 * @param goods
+	 * @return
+	 * @throws Exception
+	 */
+	public int addGoodsByGoods(GoodsTable goods) throws Exception;
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteGoodsById(String id) throws Exception;
+	/**
+	 * 
+	 * @param goods
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateGoodsById(GoodsTable goods) throws Exception;
+	/**
+	 * 
+	 * @param goods
+	 * @return
+	 * @throws Exception
+	 */
+	public List<GoodsTable> findGoodsByGoods(GoodsTable goods) throws Exception;
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public GoodsTable findGoodsById(String id) throws Exception;
+	
+}

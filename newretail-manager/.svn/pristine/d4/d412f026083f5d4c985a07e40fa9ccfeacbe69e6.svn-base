@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newretail.mapper.custom.GoodsCustomMapper" >
+
+	<resultMap id="BaseResultMap" type="com.newretail.pojo.custom.GoodsTableCustom" >
+		<id column="goodsId" property="goodsId" jdbcType="VARCHAR" />
+		<result column="goodsName" property="goodsName" jdbcType="VARCHAR" />
+		<result column="goodsPhoto" property="goodsPhoto" jdbcType="VARCHAR" />
+		<result column="goodsPrice" property="goodsPrice" jdbcType="VARCHAR" />
+		<result column="discount" property="discount" jdbcType="VARCHAR" />
+		<result column="goodsType" property="goodsType" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+		<result column="stock" property="stock" jdbcType="INTEGER" />
+		<result column="goodsStatus" property="goodsStatus" jdbcType="VARCHAR" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="sales" property="sales" jdbcType="VARCHAR" />
+		<result column="goodsCatId" property="goodsCatId" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 通用查询结果 -->
+	<sql id="Base_Column_List" >
+		    goods_table.goods_id "goodsId",goods_name "goodsName",goods_photo "goodsPhoto",
+			goods_price "goodsPrice",discount,stock "stock",goods_status "goodsStatus",
+			goods_type "goodsType",create_time,update_time,user_id "userId",goods_sales.sales "sales",
+			goods_cat_id "goodsCatId"
+		  </sql>
+	<!-- 根据用户id查询用户下所有商品-->
+	<select id="findGoodsByCustom" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT  <include refid="Base_Column_List" />
+		FROM goods_table,goods_sales
+		WHERE goods_table.goods_id = goods_sales.`goods_id` AND user_id = #{id}
+	</select>
+	<!-- 按更新时间来排序-->
+	<select id="findGoodsByCustomOrderByLastTime" parameterType="com.newretail.pojo.custom.GoodsTableCustom" resultMap="BaseResultMap">
+		SELECT  <include refid="Base_Column_List" />
+		FROM goods_table,goods_sales
+		WHERE goods_table.goods_id = goods_sales.`goods_id` AND user_id = #{userId}
+		<if test="goodsName != null" >
+			AND goods_name LIKE  CONCAT(CONCAT('%', #{goodsName}), '%')
+		</if>
+		ORDER BY update_time DESC
+	</select>
+	<!-- 按照销量来排序-->
+	<select id="findGoodsByCustomOrderBySales" parameterType="com.newretail.pojo.custom.GoodsTableCustom" resultMap="BaseResultMap">
+		SELECT  <include refid="Base_Column_List" />
+		FROM goods_table,goods_sales
+		WHERE goods_table.goods_id = goods_sales.`goods_id` AND user_id = #{userId}
+		<if test="goodsName != null" >
+			AND goods_name LIKE  CONCAT(CONCAT('%', #{goodsName}), '%')
+		</if>
+		ORDER BY sales DESC
+	</select>
+	<!-- 多条件查询-->
+	<select id="findGoodsByCustomOrderByAdmin" parameterType="com.newretail.pojo.custom.GoodsTableCustom" resultMap="BaseResultMap">
+		SELECT  <include refid="Base_Column_List" />
+		FROM goods_table,goods_sales
+		WHERE 1 = 1
+		and  goods_table.goods_id = goods_sales.`goods_id`
+		and  goods_table.user_id  in (SELECT user_id
+		from address_table
+		where 1=1
+		<if test="deliverAddress != null" >
+			AND address_table.address LIKE  CONCAT(CONCAT('%', #{deliverAddress,jdbcType=VARCHAR}), '%')
+		</if>
+		<if test="province != null" >
+			AND address_table.province_str = #{province,jdbcType=VARCHAR}
+		</if>
+		<if test="city != null" >
+			AND address_table.city_str = #{city,jdbcType=VARCHAR}
+		</if>
+		<if test="district != null" >
+			AND address_table.district_str = #{district,jdbcType=VARCHAR}
+		</if>
+		)
+		<if test="areaCode != null" >
+			AND area_code LIKE  CONCAT(CONCAT('%', #{areaCode}), '%')
+		</if>
+		<if test="userId != null" >
+			AND goods_table.userId = #{userId}
+		</if>
+		<if test="goodsId != null" >
+			AND goods_table.goods_id = #{goodsId}
+		</if>
+		<if test="goodsStatus != null" >
+			AND goods_status = #{goodsStatus}
+		</if>
+		<if test="orderBy != null" >
+			ORDER BY update_time #{orderBy}
+		</if>
+		<if test="orderBy == null" >
+			ORDER BY update_time ASC
+		</if>
+	</select>
+
+	<!-- 按条件来查询-->
+	<select id="findGoodsByCustomOrderByGoodsCustom" parameterType="com.newretail.pojo.custom.GoodsTableCustom" resultMap="BaseResultMap">
+		SELECT  <include refid="Base_Column_List" />
+		FROM goods_table,goods_sales
+		WHERE goods_table.goods_id = goods_sales.`goods_id`  and 1 = 1
+		<!-- 用户ID -->
+		<if test="userId != null" >
+			AND user_id = #{userId}
+		</if>
+		<!-- 商品名，模糊查询 -->
+		<if test="goodsName != null" >
+			AND goods_name LIKE  CONCAT(CONCAT('%', #{goodsName}), '%')
+		</if>
+		<!-- 商品ID -->
+		<if test="goodsId != null" >
+			AND goods_table.goods_id = #{goodsId}
+		</if>
+		<!-- 商品状态 -->
+		<if test="goodsStatus != null" >
+			AND goods_status = #{goodsStatus}
+		</if>
+		<!-- 商品分类ID -->
+		<if test="goodsCatId != -1" >
+			AND goods_cat_id = #{goodsCatId}
+		</if>
+		<!-- 排序方式 -->
+		<if test="orderBy != null" >
+			ORDER BY update_time #{orderBy}
+		</if>
+		<if test="orderBy == null" >
+			ORDER BY update_time ASC
+		</if>
+
+	</select>
+	<!-- 查询商品详情-->
+	<select id="findGoodsDetailByGoodsCustom" parameterType="com.newretail.pojo.custom.GoodsTableCustom" resultMap="BaseResultMap">
+		SELECT  <include refid="Base_Column_List" />
+		FROM  goods_table,goods_sales
+		WHERE goods_table.goods_id = goods_sales.`goods_id`  and goods_table.goods_id = #{goodsId}
+
+	</select>
+</mapper>

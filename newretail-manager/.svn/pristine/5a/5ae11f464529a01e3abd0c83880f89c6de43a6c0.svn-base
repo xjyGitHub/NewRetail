@@ -1,0 +1,73 @@
+package com.newretail.pojo;
+
+public class GoodsEvaluationTable {
+    private String evaluateId;
+
+    private String sellerId;
+
+    private String orderId;
+
+    private String userId;
+
+    private String content;
+
+    private String rating;
+
+    private String evalTime;
+
+    public String getEvaluateId() {
+        return evaluateId;
+    }
+
+    public void setEvaluateId(String evaluateId) {
+        this.evaluateId = evaluateId == null ? null : evaluateId.trim();
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId == null ? null : sellerId.trim();
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId == null ? null : orderId.trim();
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating == null ? null : rating.trim();
+    }
+
+    public String getEvalTime() {
+        return evalTime;
+    }
+
+    public void setEvalTime(String evalTime) {
+        this.evalTime = evalTime == null ? null : evalTime.trim();
+    }
+}

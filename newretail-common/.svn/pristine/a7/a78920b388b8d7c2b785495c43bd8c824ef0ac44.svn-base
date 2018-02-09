@@ -1,0 +1,35 @@
+/**
+ * Project Name:newretail-common
+ * File Name:TextUtils.java
+ * Package Name:com.newretail.common.utils
+ * Date:2017年10月18日下午8:47:18
+ * Copyright (c) 2017, campuspp.com All Rights Reserved.
+ *
+*/
+
+package com.newretail.common.utils;
+/**
+ * ClassName:TextUtils <br/>
+ * Function: TODO ADD FUNCTION. <br/>
+ * Reason:	 TODO ADD REASON. <br/>
+ * Date:     2017年10月18日 下午8:47:18 <br/>
+ * @author   Yongjie
+ * @version  
+ * @since    JDK 1.8
+ * @see 	 
+ */
+public class TextUtils {
+
+    /**
+     * Returns true if the string is null or 0-length.
+     * @param str the string to be examined
+     * @return true if str is null or zero length
+     */
+    public static boolean isEmpty(CharSequence str) {
+        if (str == null || str.length() == 0)
+            return true;
+        else
+            return false;
+    }
+}
+

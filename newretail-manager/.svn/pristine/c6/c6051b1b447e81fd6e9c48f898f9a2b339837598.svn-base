@@ -1,0 +1,53 @@
+package com.newretail.pojo;
+
+public class OrderToGoodsTable {
+    private String id;
+
+    private String orderCode;
+
+    private String goodsId;
+
+    private Integer goodsNum;
+
+    private Long goodsPrice;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode == null ? null : orderCode.trim();
+    }
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId == null ? null : goodsId.trim();
+    }
+
+    public Integer getGoodsNum() {
+        return goodsNum;
+    }
+
+    public void setGoodsNum(Integer goodsNum) {
+        this.goodsNum = goodsNum;
+    }
+
+    public Long getGoodsPrice() {
+        return goodsPrice;
+    }
+
+    public void setGoodsPrice(Long goodsPrice) {
+        this.goodsPrice = goodsPrice;
+    }
+}

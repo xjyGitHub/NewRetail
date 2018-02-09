@@ -1,0 +1,93 @@
+package com.newretail.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.newretail.common.utils.JqGridResult;
+import com.newretail.mapper.custom.InterfaceMapper;
+import com.newretail.pojo.custom.GoodsTableCustom;
+import com.newretail.pojo.custom.MerchantInfo;
+import com.newretail.service.IInterfaceService;
+
+@Service("interfaceService")
+public class InterfaceServiceImpl implements IInterfaceService {
+	@Autowired
+	private InterfaceMapper interfaceMapper;
+
+	@Override
+	public JqGridResult<MerchantInfo> getMerchantList(Map<String, Object> param) {
+		JqGridResult<MerchantInfo> result = new JqGridResult<>();
+		int page = (int) param.get("currentPage");// 第几页
+		int rows = (int) param.get("limitCount");// 一页显示的数量
+		PageHelper.startPage(page, rows);
+
+		List<MerchantInfo> dataList = interfaceMapper.getMerchantList(param);
+
+		PageInfo<MerchantInfo> pageInfo = new PageInfo<>(dataList);// 把结果放在分页里面
+		// 设置返回的参数
+		result.setCurrentPage(page);
+		result.setLimitCount(rows);
+		result.setCurrentCount(pageInfo.getPageNum());
+		result.setTotalCount((int) pageInfo.getTotal());// 总数量
+		result.setTotalPage(pageInfo.getPages());// 总页数
+		result.setData(pageInfo.getList());// 查询的所有数据
+		return result;
+	}
+
+	@Override
+	public JqGridResult<GoodsTableCustom> getMerchantGoodsList(Map<String, Object> param) {
+		JqGridResult<GoodsTableCustom> result = new JqGridResult<>();
+		int page = (int) param.get("currentPage");// 第几页
+		int rows = (int) param.get("limitCount");// 一页显示的数量
+		PageHelper.startPage(page, rows);
+
+		List<GoodsTableCustom> dataList = interfaceMapper.getMerchantGoodsList(param);
+		
+		PageInfo<GoodsTableCustom> pageInfo = new PageInfo<>(dataList);// 把结果放在分页里面
+		// 设置返回的参数
+		result.setCurrentPage(page);
+		result.setLimitCount(rows);
+		result.setCurrentCount(pageInfo.getPageNum());
+		result.setTotalCount((int) pageInfo.getTotal());// 总数量
+		result.setTotalPage(pageInfo.getPages());// 总页数
+		result.setData(pageInfo.getList());// 查询的所有数据
+		return result;
+	}
+
+	@Override
+	public JqGridResult<Map<String, Object>> getGoodsTypeList(Map<String, Object> param) {
+		JqGridResult<Map<String, Object>> result = new JqGridResult<>();
+		List<Map<String, Object>> dataList = interfaceMapper.getGoodsTypeList(param);
+		for(int i=0;i<dataList.size();i++){
+			dataList.get(i).put("goodsTypeId", i);
+		}
+		result.setData(dataList);
+		return result;
+	}
+
+	@Override
+	public JqGridResult<Map<String, Object>> getEvaluateList(Map<String, Object> param) {
+		System.out.println("param:"+param);
+		JqGridResult<Map<String, Object>> result = new JqGridResult<>();
+		int page = (int) param.get("currentPage");// 第几页
+		int rows = (int) param.get("limitCount");// 一页显示的数量
+		PageHelper.startPage(page, rows);
+		List<Map<String, Object>> dataList = interfaceMapper.getEvaluateList(param);
+		PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(dataList);// 把结果放在分页里面
+		// 设置返回的参数
+		result.setCurrentPage(page);
+		result.setLimitCount(rows);
+		result.setCurrentCount(pageInfo.getPageNum());
+		result.setTotalCount((int) pageInfo.getTotal());// 总数量
+		result.setTotalPage(pageInfo.getPages());// 总页数
+		result.setData(pageInfo.getList());// 查询的所有数据	
+		//result.setData(dataList);
+		return result;
+	}
+
+}

@@ -1,0 +1,60 @@
+package com.newretail.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.newretail.pojo.UserAdminTable;
+import com.newretail.pojo.UserDeliveryTable;
+import com.newretail.pojo.UserSellerTable;
+import com.newretail.pojo.UserTable;
+/**
+ * @Description 用户管理服务类
+ * @author Administrator
+ *
+ */
+public interface UserManagerService {
+
+	int addAdmin(UserAdminTable admin);
+
+	int delAdminById(String id);
+
+	int updateAdmin(UserAdminTable admin);
+
+	UserAdminTable querAdminById(String id);
+
+	List<UserAdminTable> queryAdminList();
+
+	int delUserById(String id);
+
+	int updateUser(UserTable user);
+
+	UserTable querUserById(String id);
+
+	int addSeller(UserTable user, UserSellerTable seller);
+
+	UserSellerTable querySellerById(String id);
+
+	int delSellerById(String id, String userid);
+
+	int updateSeller(UserTable user, UserSellerTable seller);
+
+	int addDelivery(UserTable user, UserDeliveryTable delivery);
+
+	UserDeliveryTable queryDeliveryById(String id);
+
+	int delDeliveryById(String id, String userid);
+
+	int updateDelivery(UserTable user, UserDeliveryTable delivery);
+
+	List<UserSellerTable> querySellerList();
+
+	List<UserTable> queryUserList();
+
+	List<UserDeliveryTable> queryDeliveryList();
+
+	int updateSellerCheckStatus(UserSellerTable seller);
+
+	int updateDeliveryCheckStatus(UserDeliveryTable delivery);
+	
+	
+}

@@ -1,0 +1,14 @@
+#单点登录系统IURL
+SSO_BASE_URL = http://www.sysen.cn/newretail-sso
+#根据Token请求用户信息 Single sign-on system IURL
+SSO_USER_TOKEN = /user/token/
+#前台登录页面 Front desk login page
+SSO_PAGE_LOGIN = /page/login/
+#后台接登录接口 Background login interface
+SSO_USER_LOGIN = /user/login/
+#管理员访问页面配置 Admin request pages
+ADMIN_PAGES = /index,/adminManager,/deliveryInfo,/deliveryManager,/orderManager,/productAuthenticate,/sellerManager,/userManager,/getAdminList,/addAdmin,/delAdmin,/updateAdmin,/queryAdmin,/getUserList,/delUser,/queryUser,/getSellerList,/toIndex,/queryDeliverDetail,/queryDeliverByCondition,/add,/getGoodsList,/getGoodsAdminList,/update,/del,/authenticate,/putOnAndDown
+#商家页面 Seller Page
+SELLER_PAGES = /index,/order,/product,/merchantList,/merchantGoodsList,/goodsTypeList,/evaluateList,/sendSms,/vildate,/delivery
+#普通用户 user
+USER_PAGES = /sendSms,/vildate,/merchantList,/merchantGoodsList,/goodsTypeList,/evaluateList

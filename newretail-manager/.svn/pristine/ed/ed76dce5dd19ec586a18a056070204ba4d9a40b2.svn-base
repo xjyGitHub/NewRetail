@@ -1,0 +1,107 @@
+var page = function() {
+	return {
+		$addForm : $("#addForm"),
+		$mainCon : $("#mainCon"),
+		$searchForm : $("#searchForm"),
+		$grid_selector : $('#grid-table'),
+		$pager_selector : $('#grid-pager'),
+		// 新增
+		onTapAdd : function() {
+			var that = this;
+			that.$addForm.show();
+			that.$mainCon.hide();
+			that.$searchForm.hide();
+		},
+		// 保存
+		onTapSave : function() {
+			var that = this;
+			common.showTip('正在保存中...');
+			setTimeout(function() {
+				common.hideTip();
+			}, 1000);
+		},
+		// 返回
+		onTapBack : function() {
+			var that = this;
+			that.$addForm.hide();
+			that.$mainCon.show();
+			that.$searchForm.show();
+		},
+		// 查看详情
+		viewDetail : function(rowId) {
+			var that = this;
+			var rowData = that.$grid_selector.jqGrid('getRowData', rowId);
+			$("#myModalDetail").modal('show');
+		},
+		// 确认订单
+		toConfirm : function(obj) {
+			var that = this, html = '', $currModal = $(obj).parents('.modal');
+			html += '<div class="">请选择配送方式：';
+			html += '<select class="select-sm"><option value="AL">编码</option><option value="AK">名称</option></select>';
+			html += '</div>';
+			$currModal.find('.modal-body').html(html);
+			$(obj).attr('onclick', '');
+		},		
+		query : function() {
+			var orderCode = $('#orderCode').val();
+			var orderTime = $('#orderTime').val();
+			var orderStatus = $('#orderStatus').val();
+			var deliverStatus = $('#deliverStatus').val();
+			var deliverType = $('#deliverType').val();
+			
+			alert("HHHH");
+			/*$("#grid-table").jqGrid({
+				postData : {
+					"orderCode" : orderCode,
+					"orderTime" : orderTime,
+					"orderStatus" : orderStatus,
+					"deliverStatus" : deliverStatus,
+					"deliverType" : deliverType
+				},
+				url : "${pageContext.request.contextPath}/order/getOrderList.do",
+				datatype : "json", // 数据来源，本地数据
+				mtype : "POST",// 提交方式
+				height : 420,// 高度，表格高度。可为数值、百分比或'auto'
+				// width:1000,//这个宽度不能为百分比
+				autowidth : true,// 自动宽
+				colNames : ['ID','下单时间','支付状态','配送状态','订单状态','订单金额','操作'],
+				colModel : [
+				   {name:'orderId',index:'orderId', width:150},
+				   {name:'orderTime',index:'orderTime', width:150},
+				   {name:'payStatus',index:'payStatus', width:150},
+				   {name:'deliverStatus',index:'deliverStatus', width:150},
+				   {name:'orderStatus',index:'orderStatus', width:150},
+				   {name:'orderAmount',index:'orderAmount', width:150},
+				   {name:'myac',index:'', width:80, fixed:true, sortable:false,resize:false, formatter: function (value, grid, rows, state) { return "<button
+						 class=\"btn btn-xs btn-info\" onclick=\"page.viewDetail(" + rows.id +")\">查看</button>" }
+				   {name:'merchantId',index:'merchantId',hidden:true, width:150},
+				   {name:'orderCode',index:'orderCode',hidden:true, width:150},
+				   {name:'receiverId',index:'receiverId',hidden:true, width:150},
+				   {name:'deliverAddressSeq',index:'deliverAddressSeq',hidden:true, width:150},
+				   {name:'deliverType',index:'deliverType',hidden:true, width:150},
+				   {name:'userId',index:'userId',hidden:true, width:150},
+				],
+				rownumbers : true,// 添加左侧行号
+				viewrecords : true,// 是否在浏览导航栏显示记录总数
+				rowNum : 15,// 每页显示记录数
+				rowList : [ 15, 20, 25 ],// 用于改变显示行数的下拉列表框的元素数组。
+				jsonReader : {
+					records:"totalCount",				
+				    page:"currentPage",				 
+				    total:"totalPage",
+				    repeatitems:false,
+				    root:"data"	
+				},
+				pager : $pager_selector
+			});*/
+			
+
+		}
+
+	}
+}();
+
+$(function() {
+	/* page.initMainGrid(); */
+	$('#queryBtn').click(page.query());
+})

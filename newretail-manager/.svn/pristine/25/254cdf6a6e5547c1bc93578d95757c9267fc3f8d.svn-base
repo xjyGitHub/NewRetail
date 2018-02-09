@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newretail.mapper.UserSellerTableMapper" >
+  <resultMap id="BaseResultMap" type="com.newretail.pojo.UserSellerTable" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+    <result column="authentication_status" property="authenticationStatus" jdbcType="INTEGER" />
+    <result column="management_class" property="managementClass" jdbcType="VARCHAR" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+    <result column="shop_address" property="shopAddress" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="DOUBLE" />
+    <result column="latitude" property="latitude" jdbcType="DOUBLE" />
+    <result column="distance" property="distance" jdbcType="DOUBLE" />
+    <result column="send_price" property="sendPrice" jdbcType="DOUBLE" />
+    <result column="order_lead_time" property="orderLeadTime" jdbcType="TIMESTAMP" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="opening_hours" property="openingHours" jdbcType="VARCHAR" />
+    <result column="rating" property="rating" jdbcType="VARCHAR" />
+    <result column="rating_count" property="ratingCount" jdbcType="INTEGER" />
+    <result column="business_license_url" property="businessLicenseUrl" jdbcType="VARCHAR" />
+    <result column="business_license_id" property="businessLicenseId" jdbcType="VARCHAR" />
+    <result column="piecewise_agent_fee" property="piecewiseAgentFee" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, shop_id, user_id, shop_name, manager_name, authentication_status, management_class, 
+    pic_url, create_time, update_time, shop_address, longitude, latitude, distance, send_price, 
+    order_lead_time, phone, opening_hours, rating, rating_count, business_license_url, 
+    business_license_id, piecewise_agent_fee
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newretail.pojo.UserSellerTableExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_seller_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_seller_table
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_seller_table
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.newretail.pojo.UserSellerTableExample" >
+    delete from user_seller_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newretail.pojo.UserSellerTable" >
+    insert into user_seller_table (id, shop_id, user_id, 
+      shop_name, manager_name, authentication_status, 
+      management_class, pic_url, create_time, 
+      update_time, shop_address, longitude, 
+      latitude, distance, send_price, 
+      order_lead_time, phone, opening_hours, 
+      rating, rating_count, business_license_url, 
+      business_license_id, piecewise_agent_fee)
+    values (#{id,jdbcType=VARCHAR}, #{shopId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{shopName,jdbcType=VARCHAR}, #{managerName,jdbcType=VARCHAR}, #{authenticationStatus,jdbcType=INTEGER}, 
+      #{managementClass,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=VARCHAR}, #{shopAddress,jdbcType=VARCHAR}, #{longitude,jdbcType=DOUBLE}, 
+      #{latitude,jdbcType=DOUBLE}, #{distance,jdbcType=DOUBLE}, #{sendPrice,jdbcType=DOUBLE}, 
+      #{orderLeadTime,jdbcType=TIMESTAMP}, #{phone,jdbcType=VARCHAR}, #{openingHours,jdbcType=VARCHAR}, 
+      #{rating,jdbcType=VARCHAR}, #{ratingCount,jdbcType=INTEGER}, #{businessLicenseUrl,jdbcType=VARCHAR}, 
+      #{businessLicenseId,jdbcType=VARCHAR}, #{piecewiseAgentFee,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.newretail.pojo.UserSellerTable" >
+    insert into user_seller_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="managerName != null" >
+        manager_name,
+      </if>
+      <if test="authenticationStatus != null" >
+        authentication_status,
+      </if>
+      <if test="managementClass != null" >
+        management_class,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="shopAddress != null" >
+        shop_address,
+      </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
+      <if test="distance != null" >
+        distance,
+      </if>
+      <if test="sendPrice != null" >
+        send_price,
+      </if>
+      <if test="orderLeadTime != null" >
+        order_lead_time,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="openingHours != null" >
+        opening_hours,
+      </if>
+      <if test="rating != null" >
+        rating,
+      </if>
+      <if test="ratingCount != null" >
+        rating_count,
+      </if>
+      <if test="businessLicenseUrl != null" >
+        business_license_url,
+      </if>
+      <if test="businessLicenseId != null" >
+        business_license_id,
+      </if>
+      <if test="piecewiseAgentFee != null" >
+        piecewise_agent_fee,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="authenticationStatus != null" >
+        #{authenticationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="managementClass != null" >
+        #{managementClass,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null" >
+        #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="distance != null" >
+        #{distance,jdbcType=DOUBLE},
+      </if>
+      <if test="sendPrice != null" >
+        #{sendPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderLeadTime != null" >
+        #{orderLeadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="openingHours != null" >
+        #{openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null" >
+        #{rating,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingCount != null" >
+        #{ratingCount,jdbcType=INTEGER},
+      </if>
+      <if test="businessLicenseUrl != null" >
+        #{businessLicenseUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicenseId != null" >
+        #{businessLicenseId,jdbcType=VARCHAR},
+      </if>
+      <if test="piecewiseAgentFee != null" >
+        #{piecewiseAgentFee,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newretail.pojo.UserSellerTableExample" resultType="java.lang.Integer" >
+    select count(*) from user_seller_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_seller_table
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopId != null" >
+        shop_id = #{record.shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managerName != null" >
+        manager_name = #{record.managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authenticationStatus != null" >
+        authentication_status = #{record.authenticationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.managementClass != null" >
+        management_class = #{record.managementClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picUrl != null" >
+        pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopAddress != null" >
+        shop_address = #{record.shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.longitude != null" >
+        longitude = #{record.longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.latitude != null" >
+        latitude = #{record.latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="record.distance != null" >
+        distance = #{record.distance,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sendPrice != null" >
+        send_price = #{record.sendPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.orderLeadTime != null" >
+        order_lead_time = #{record.orderLeadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openingHours != null" >
+        opening_hours = #{record.openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rating != null" >
+        rating = #{record.rating,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ratingCount != null" >
+        rating_count = #{record.ratingCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.businessLicenseUrl != null" >
+        business_license_url = #{record.businessLicenseUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessLicenseId != null" >
+        business_license_id = #{record.businessLicenseId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.piecewiseAgentFee != null" >
+        piecewise_agent_fee = #{record.piecewiseAgentFee,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_seller_table
+    set id = #{record.id,jdbcType=VARCHAR},
+      shop_id = #{record.shopId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      manager_name = #{record.managerName,jdbcType=VARCHAR},
+      authentication_status = #{record.authenticationStatus,jdbcType=INTEGER},
+      management_class = #{record.managementClass,jdbcType=VARCHAR},
+      pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=VARCHAR},
+      shop_address = #{record.shopAddress,jdbcType=VARCHAR},
+      longitude = #{record.longitude,jdbcType=DOUBLE},
+      latitude = #{record.latitude,jdbcType=DOUBLE},
+      distance = #{record.distance,jdbcType=DOUBLE},
+      send_price = #{record.sendPrice,jdbcType=DOUBLE},
+      order_lead_time = #{record.orderLeadTime,jdbcType=TIMESTAMP},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      opening_hours = #{record.openingHours,jdbcType=VARCHAR},
+      rating = #{record.rating,jdbcType=VARCHAR},
+      rating_count = #{record.ratingCount,jdbcType=INTEGER},
+      business_license_url = #{record.businessLicenseUrl,jdbcType=VARCHAR},
+      business_license_id = #{record.businessLicenseId,jdbcType=VARCHAR},
+      piecewise_agent_fee = #{record.piecewiseAgentFee,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.newretail.pojo.UserSellerTable" >
+    update user_seller_table
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        manager_name = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="authenticationStatus != null" >
+        authentication_status = #{authenticationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="managementClass != null" >
+        management_class = #{managementClass,jdbcType=VARCHAR},
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="shopAddress != null" >
+        shop_address = #{shopAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
+      <if test="distance != null" >
+        distance = #{distance,jdbcType=DOUBLE},
+      </if>
+      <if test="sendPrice != null" >
+        send_price = #{sendPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderLeadTime != null" >
+        order_lead_time = #{orderLeadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="openingHours != null" >
+        opening_hours = #{openingHours,jdbcType=VARCHAR},
+      </if>
+      <if test="rating != null" >
+        rating = #{rating,jdbcType=VARCHAR},
+      </if>
+      <if test="ratingCount != null" >
+        rating_count = #{ratingCount,jdbcType=INTEGER},
+      </if>
+      <if test="businessLicenseUrl != null" >
+        business_license_url = #{businessLicenseUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="businessLicenseId != null" >
+        business_license_id = #{businessLicenseId,jdbcType=VARCHAR},
+      </if>
+      <if test="piecewiseAgentFee != null" >
+        piecewise_agent_fee = #{piecewiseAgentFee,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.newretail.pojo.UserSellerTable" >
+    update user_seller_table
+    set shop_id = #{shopId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      manager_name = #{managerName,jdbcType=VARCHAR},
+      authentication_status = #{authenticationStatus,jdbcType=INTEGER},
+      management_class = #{managementClass,jdbcType=VARCHAR},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+      shop_address = #{shopAddress,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE},
+      distance = #{distance,jdbcType=DOUBLE},
+      send_price = #{sendPrice,jdbcType=DOUBLE},
+      order_lead_time = #{orderLeadTime,jdbcType=TIMESTAMP},
+      phone = #{phone,jdbcType=VARCHAR},
+      opening_hours = #{openingHours,jdbcType=VARCHAR},
+      rating = #{rating,jdbcType=VARCHAR},
+      rating_count = #{ratingCount,jdbcType=INTEGER},
+      business_license_url = #{businessLicenseUrl,jdbcType=VARCHAR},
+      business_license_id = #{businessLicenseId,jdbcType=VARCHAR},
+      piecewise_agent_fee = #{piecewiseAgentFee,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

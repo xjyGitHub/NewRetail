@@ -1,0 +1,93 @@
+package com.newretail.pojo;
+
+public class UserSellerTable {
+    private String id;
+
+    private String userId;
+
+    private String shopName;
+
+    private String managerName;
+
+    private Integer authenticationStatus;
+
+    private String managementClass;
+
+    private String picUrl;
+
+    private String createTime;
+
+    private String updateTime;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName == null ? null : shopName.trim();
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName == null ? null : managerName.trim();
+    }
+
+    public Integer getAuthenticationStatus() {
+        return authenticationStatus;
+    }
+
+    public void setAuthenticationStatus(Integer authenticationStatus) {
+        this.authenticationStatus = authenticationStatus;
+    }
+
+    public String getManagementClass() {
+        return managementClass;
+    }
+
+    public void setManagementClass(String managementClass) {
+        this.managementClass = managementClass == null ? null : managementClass.trim();
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl == null ? null : picUrl.trim();
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime == null ? null : updateTime.trim();
+    }
+}

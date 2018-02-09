@@ -1,0 +1,18 @@
+package com.newretail.service;
+
+import java.util.Map;
+
+import com.newretail.common.utils.JqGridResult;
+import com.newretail.pojo.custom.GoodsTableCustom;
+import com.newretail.pojo.custom.MerchantInfo;
+
+public interface IInterfaceService {
+
+	JqGridResult<MerchantInfo> getMerchantList(Map<String,Object>param);
+	
+	JqGridResult<GoodsTableCustom> getMerchantGoodsList(Map<String,Object>param);
+	
+	JqGridResult<Map<String,Object>> getGoodsTypeList(Map<String,Object>param);
+	
+	JqGridResult<Map<String,Object>> getEvaluateList(Map<String,Object>param);
+}

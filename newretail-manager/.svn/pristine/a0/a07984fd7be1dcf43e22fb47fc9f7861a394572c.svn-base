@@ -1,0 +1,73 @@
+package com.newretail.pojo;
+
+public class MerchantTable {
+    private String merchantId;
+
+    private String merchantName;
+
+    private String merchantTime;
+
+    private String auditorId;
+
+    private String merchantRating;
+
+    private String merchantCount;
+
+    private String merchantPwd;
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId == null ? null : merchantId.trim();
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName == null ? null : merchantName.trim();
+    }
+
+    public String getMerchantTime() {
+        return merchantTime;
+    }
+
+    public void setMerchantTime(String merchantTime) {
+        this.merchantTime = merchantTime == null ? null : merchantTime.trim();
+    }
+
+    public String getAuditorId() {
+        return auditorId;
+    }
+
+    public void setAuditorId(String auditorId) {
+        this.auditorId = auditorId == null ? null : auditorId.trim();
+    }
+
+    public String getMerchantRating() {
+        return merchantRating;
+    }
+
+    public void setMerchantRating(String merchantRating) {
+        this.merchantRating = merchantRating == null ? null : merchantRating.trim();
+    }
+
+    public String getMerchantCount() {
+        return merchantCount;
+    }
+
+    public void setMerchantCount(String merchantCount) {
+        this.merchantCount = merchantCount == null ? null : merchantCount.trim();
+    }
+
+    public String getMerchantPwd() {
+        return merchantPwd;
+    }
+
+    public void setMerchantPwd(String merchantPwd) {
+        this.merchantPwd = merchantPwd == null ? null : merchantPwd.trim();
+    }
+}

@@ -1,0 +1,37 @@
+package com.newretail.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.newretail.common.utils.JqGridResult;
+import com.newretail.mapper.custom.OrderModelMapper;
+import com.newretail.pojo.OrderTable;
+import com.newretail.service.IOrderManageService;
+
+@Service("orderManageService")
+public class OrderManageServiceImpl implements IOrderManageService {
+	@Autowired
+	private OrderModelMapper orderModelMapper;
+	
+	@Override
+	public JqGridResult<Map<String,Object>> getOrderList(Map<String, Object> param) {
+		 JqGridResult<Map<String,Object>> result = new JqGridResult();	
+		 List<Map<String,Object>> lists = orderModelMapper.getOrderList(param);
+		 int sums = orderModelMapper.getOrderNum(param);
+		 result.setTotalCount(sums);	
+		 int rows = (int) param.get("rows");//一页显示的数量
+		 result.setTotalPage(sums%rows==0?sums/rows:(sums/rows+1));
+		 result.setData(lists);
+		 System.out.println("业务层："+lists);
+		 return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> getGoodsByOrderCode(String orderCode) {
+		return orderModelMapper.getGoodsByOrderCode(orderCode);
+	}
+
+}

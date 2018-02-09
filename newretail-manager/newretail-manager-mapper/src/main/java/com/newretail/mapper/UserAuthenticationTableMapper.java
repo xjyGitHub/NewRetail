@@ -1,0 +1,22 @@
+package com.newretail.mapper;
+
+import com.newretail.pojo.UserAuthenticationTable;
+import com.newretail.pojo.UserAuthenticationTableExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface UserAuthenticationTableMapper {
+    int countByExample(UserAuthenticationTableExample example);
+
+    int deleteByExample(UserAuthenticationTableExample example);
+
+    int insert(UserAuthenticationTable record);
+
+    int insertSelective(UserAuthenticationTable record);
+
+    List<UserAuthenticationTable> selectByExample(UserAuthenticationTableExample example);
+
+    int updateByExampleSelective(@Param("record") UserAuthenticationTable record, @Param("example") UserAuthenticationTableExample example);
+
+    int updateByExample(@Param("record") UserAuthenticationTable record, @Param("example") UserAuthenticationTableExample example);
+}

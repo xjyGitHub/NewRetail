@@ -1,0 +1,17 @@
+package com.newretail.service;
+
+import java.util.List;
+import java.util.Map;
+
+public interface IOrderManageService {
+	
+	/**
+	 * 获取符合条件的所有订单信息
+	 * */
+	List<Map<String,Object>> getOrderList(Map<String,Object> param);
+	
+	/**
+	 * 获取指定订单的所有商品信息
+	 * */
+	List<Map<String, Object>> getGoodsByOrderCode(String orderCode);
+}

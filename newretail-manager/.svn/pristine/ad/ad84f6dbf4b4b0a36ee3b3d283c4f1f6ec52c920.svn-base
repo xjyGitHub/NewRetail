@@ -1,0 +1,93 @@
+package com.newretail.pojo;
+
+public class UserAddressTable {
+    private Integer id;
+
+    private String userId;
+
+    private String deliverAddressSeq;
+
+    private String receiverPhone;
+
+    private String province;
+
+    private String city;
+
+    private String district;
+
+    private String deliverAddress;
+
+    private String status;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
+    }
+
+    public String getDeliverAddressSeq() {
+        return deliverAddressSeq;
+    }
+
+    public void setDeliverAddressSeq(String deliverAddressSeq) {
+        this.deliverAddressSeq = deliverAddressSeq == null ? null : deliverAddressSeq.trim();
+    }
+
+    public String getReceiverPhone() {
+        return receiverPhone;
+    }
+
+    public void setReceiverPhone(String receiverPhone) {
+        this.receiverPhone = receiverPhone == null ? null : receiverPhone.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district == null ? null : district.trim();
+    }
+
+    public String getDeliverAddress() {
+        return deliverAddress;
+    }
+
+    public void setDeliverAddress(String deliverAddress) {
+        this.deliverAddress = deliverAddress == null ? null : deliverAddress.trim();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
+    }
+}

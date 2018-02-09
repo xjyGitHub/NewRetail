@@ -1,0 +1,194 @@
+package com.newretail.controller;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.newretail.common.utils.CookieUtils;
+import com.newretail.common.utils.DateUtil;
+import com.newretail.common.utils.ExceptionUtil;
+import com.newretail.common.utils.JqGridResult;
+import com.newretail.common.utils.NewRetailResult;
+import com.newretail.common.utils.TextUtils;
+import com.newretail.common.utils.TimeUtils;
+import com.newretail.mapper.custom.GoodsCustomMapper;
+import com.newretail.pojo.GoodsTable;
+import com.newretail.pojo.UserTable;
+import com.newretail.pojo.custom.GoodsTableCustom;
+import com.newretail.service.GoodsManagerService;
+import com.newretail.service.UserAuthenticationService;
+import com.newretail.service.UserService;
+
+@Controller
+@RequestMapping("/goods")
+public class GoodsManagerController {
+
+	@Autowired
+	private GoodsManagerService goodsManagerService;
+
+	@Autowired
+	private UserAuthenticationService userAuthenticationService;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private GoodsCustomMapper goodsCustomMapper;
+	
+	@RequestMapping("add")
+	@ResponseBody
+	public NewRetailResult addGoodsByGoods(@RequestBody GoodsTable goods, HttpServletRequest request) {
+		GoodsTable goodsTable = new GoodsTable();
+		String token = CookieUtils.getCookieValue(request, "NEWRETAIL_LOGIN");
+		UserTable userByToken = null;
+		try {
+			userByToken = userService.getUserByToken(token);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+
+		}
+		String userId = userByToken.getId();
+		String goodsName = goods.getGoodsName();
+		String goodsPhoto = goods.getGoodsPhoto();
+		String goodsPric = goods.getGoodsPrice();
+		String discount = goods.getDiscount();
+		String goodsType = goods.getGoodsType();
+	
+		Integer stock = goods.getStock();
+		String goodsStatus = "1";
+		boolean isAuthentication;
+		try {
+			isAuthentication = userAuthenticationService.findUserIsAuthentication(userId);
+			if(isAuthentication==false) {
+				return NewRetailResult.build(0, "您尚未认证，请联系管理员");
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return NewRetailResult.build(0, ExceptionUtil.getStackTrace(e1));
+		}
+		if(!TextUtils.isEmpty(userId)) {
+			goodsTable.setUserId(userId);
+		}else {
+			return NewRetailResult.build(0, "可能登录失效，请刷新页面重试！");
+		}
+		if (!TextUtils.isEmpty(goodsTable.getGoodsName()))
+			return NewRetailResult.build(0, "商品名不能为空");
+		else
+			goodsTable.setGoodsName(goodsName);
+		if (goodsPhoto == null || goodsPhoto == "")
+			return NewRetailResult.build(0, "请选择商品图片");
+		else
+			goodsTable.setGoodsPhoto(goodsPhoto);
+		
+		if (goodsPric != null)
+			goodsTable.setGoodsPrice(goodsPric);
+		else
+			return NewRetailResult.build(0, "请设置商品价格");
+		if (discount != null)
+			goodsTable.setDiscount(discount);
+		else
+			return NewRetailResult.build(0, "折扣为空");
+		if (goodsType != null && goodsType != "")
+			goodsTable.setGoodsType(goodsType);
+		else
+			return NewRetailResult.build(0, "商品类型不能为空");
+		String createTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+		
+		goodsTable.setCreateTime(createTime);
+		goodsTable.setUpdateTime(createTime);
+		if (stock != null)
+			goodsTable.setStock(stock);
+		else
+			return NewRetailResult.build(0, "库存不能为空");
+		if (goodsStatus != null && goodsStatus != "")
+			goodsTable.setGoodsStatus(goodsStatus);
+		else
+			return NewRetailResult.build(0, "货物状态");
+		try {
+			int status = goodsManagerService.addGoodsByGoods(goods);
+			if (status > 0) {
+				return NewRetailResult.ok();
+			} else {
+				return NewRetailResult.build(0, "添加失败");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return NewRetailResult.build(0, ExceptionUtil.getStackTrace(e));
+		}
+	}
+
+	/**
+	 * @see: 验证Object数组类型的是否为空
+	 */
+	public static boolean isNullorEmpty(Object[] obj) {
+		if ((obj == null) || (obj.length == 0)) {
+			return true;
+		}
+		return false;
+	}
+
+
+	@RequestMapping("getGoodsList")
+	@ResponseBody
+	public JqGridResult<GoodsTableCustom> getGoodsList(HttpServletRequest req,HttpServletResponse response) {
+		Logger log = Logger.getLogger(GoodsManagerController.class);
+		String token = CookieUtils.getCookieValue(req, "NEWRETAIL_LOGIN");
+		UserTable userByToken = null;
+		try {
+			userByToken = userService.getUserByToken(token);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+
+		}
+		String goodsName = req.getParameter("goodsName");
+		String  searchCat = req.getParameter("searchSelect");
+		int rows = Integer.parseInt(req.getParameter("rows"));//这个是每页要显示的行数
+		int page = Integer.parseInt(req.getParameter("page"));//显示的第几页
+		
+		//设置分页及排序参数
+		Map<String,Integer> pages = new HashMap<String,Integer>();
+		pages.put("rows", rows);
+		pages.put("page", page);
+		log.error("------------searchCat------------"+searchCat);
+		//设置排序方式
+		if(searchCat==null) {
+			pages.put("status", 0); //默认不排序
+		}else if(searchCat.equals("1")) { //按销量排序
+			pages.put("status", 1);
+		}else if (searchCat.equals("2")) { //按时间排序
+			pages.put("status", 2);
+		}else {
+			pages.put("status", 0);
+		}
+		//设置查询条件
+		GoodsTable goodsTable = new GoodsTable();
+		if(!TextUtils.isEmpty(userByToken.getId())) {
+			goodsTable.setUserId(userByToken.getId());
+		}else {
+			return null;
+		}	
+		if(!TextUtils.isEmpty(goodsName)) {
+			goodsTable.setGoodsName(goodsName);
+		}
+		
+		try {
+			return goodsManagerService.findGoodsByGoods(goodsTable, pages);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			
+		}
+		return null;
+	
+	}
+}

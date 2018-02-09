@@ -1,0 +1,81 @@
+package com.newretail.controller;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.newretail.common.utils.JqGridResult;
+import com.newretail.pojo.custom.GoodsTableCustom;
+import com.newretail.pojo.custom.MerchantInfo;
+import com.newretail.service.IInterfaceService;
+
+/**
+ * @author 金毅
+ * 对外提供的
+ * */
+@Controller
+@RequestMapping("/interface")
+@ResponseBody
+public class InterfaceController {
+
+	@Autowired
+	private IInterfaceService interfaceService;
+	
+	/***
+	 * 获取商家列表
+	 */
+	@RequestMapping("/merchantList")
+	public JqGridResult<MerchantInfo> getMerchantList(HttpServletRequest req,HttpServletResponse res){
+		Map<String,Object> param = new HashMap<>();
+		param.put("shopId", req.getParameter("shopId"));
+		param.put("shopName", req.getParameter("shopName"));
+		param.put("currentPage",Integer.parseInt(req.getParameter("currentPage")));
+		param.put("limitCount", Integer.parseInt(req.getParameter("limitCount")));
+		param.put("latitude", req.getParameter("latitude"));
+		param.put("longitude", req.getParameter("longitude"));
+		return interfaceService.getMerchantList(param);
+	}
+	/**
+	 *获取指定商家的商品信息 
+	 */
+	@RequestMapping("/merchantGoodsList")
+	public JqGridResult<GoodsTableCustom> getMerchantGoodsList(HttpServletRequest req,HttpServletResponse res){
+		Map<String,Object> param = new HashMap<>();
+		param.put("shopId", req.getParameter("shopId"));
+		param.put("goodsId", req.getParameter("goodsId"));
+		param.put("goodsType", req.getParameter("goodsType"));
+		param.put("goodsName", req.getParameter("goodsName"));
+		param.put("currentPage", Integer.parseInt(req.getParameter("currentPage")));
+		param.put("limitCount", Integer.parseInt(req.getParameter("limitCount")));
+		return interfaceService.getMerchantGoodsList(param);
+	}
+	/**
+	 *获取指定商家的商品类别
+	 */
+	@RequestMapping("/goodsTypeList")
+	public JqGridResult<Map<String,Object>> getGoodsTypeList(HttpServletRequest req,HttpServletResponse res){
+		Map<String,Object> param = new HashMap<>();
+		param.put("shopId", req.getParameter("shopId"));
+		return interfaceService.getGoodsTypeList(param);
+	}
+	/**
+	 *获取指定商家的用户评价
+	 */
+	@RequestMapping("/evaluateList")
+	public JqGridResult<Map<String,Object>> getEvaluateList(HttpServletRequest req,HttpServletResponse res){
+		Map<String,Object> param = new HashMap<>();
+		param.put("shopId", req.getParameter("shopId"));
+		param.put("currentPage", Integer.parseInt(req.getParameter("currentPage")));
+		param.put("limitCount", Integer.parseInt(req.getParameter("limitCount")));
+		return interfaceService.getEvaluateList(param);
+	}
+	
+	
+	
+}

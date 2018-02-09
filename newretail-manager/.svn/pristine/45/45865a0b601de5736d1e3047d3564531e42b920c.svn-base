@@ -1,0 +1,83 @@
+var page=function(){
+	return{
+		$addForm:$("#addForm"),
+		$mainCon:$("#mainCon"),
+		$searchForm:$("#searchForm"),
+		$grid_selector:$('#grid-table'),
+		pager_selector:'#grid-pager',
+		//新增
+		onTapAdd:function(){
+			var that=this;
+			that.$addForm.show();
+			that.$mainCon.hide();
+			that.$searchForm.hide();
+		},
+		//保存
+		onTapSave:function(){
+			var that=this;
+			common.showTip('正在保存中...');
+			setTimeout(function(){
+				common.hideTip();
+			},1000);
+		},
+		//返回
+		onTapBack:function(){
+			var that=this;
+			that.$addForm.hide();
+			that.$mainCon.show();
+			that.$searchForm.show();
+		},
+		//查看详情
+		viewDetail:function(rowId){
+			var that=this;
+			var rowData = that.$grid_selector.jqGrid('getRowData',rowId);
+			$("#myModalDetail").modal('show');
+		},
+		//确认订单
+		toConfirm:function(obj){
+			var that=this,html='',
+			$currModal=$(obj).parents('.modal');
+			html+='<div class="">请选择配送方式：';
+			html+='<select class="select-sm"><option value="AL">编码</option><option value="AK">名称</option></select>';
+			html+='</div>';
+      $currModal.find('.modal-body').html(html);
+      $(obj).attr('onclick','');
+		},
+		initMainGrid:function(){
+			var that=this;
+			var buildGridObj={
+				url:'data/data3.json',
+				mtype:'GET',
+				height:300,
+				colNames:[ 'ID','下单时间','支付状态', '配送状态', '订单状态','订单金额','操作'],
+				colModel:[
+				{name:'id',index:'id', width:60, sorttype:"int"},
+				{name:'orderTime',index:'orderTime', width:150},
+				{name:'payStatus',index:'payStatus', width:70},
+				{name:'deliveryStatus',index:'deliveryStatus',width:90},
+				{name:'orderStatus',index:'orderStatus', width:90},
+				{name:'money',index:'money', width:150},
+				{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+					formatter: function (value, grid, rows, state) { return "<button class=\"btn btn-xs btn-info\" onclick=\"page.viewDetail(" + rows.id + ")\">查看</button>" }  
+				},
+				], 
+				rowList:[10,20,30],
+				pager:that.pager_selector,
+				viewrecords:true,
+				multiselect: true,
+				multiboxonly: true,
+				rowList:[10,20,30],
+				caption:'订单列表',
+				ondblClickRow:function(id){
+
+				}
+			}
+			common.buildGrid(that.$grid_selector,buildGridObj,that.pager_selector);
+		}
+	}
+}();
+
+
+$(function(){
+	page.initMainGrid();
+})

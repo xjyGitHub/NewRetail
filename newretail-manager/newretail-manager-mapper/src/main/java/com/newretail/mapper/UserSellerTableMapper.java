@@ -1,0 +1,30 @@
+package com.newretail.mapper;
+
+import com.newretail.pojo.UserSellerTable;
+import com.newretail.pojo.UserSellerTableExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface UserSellerTableMapper {
+    int countByExample(UserSellerTableExample example);
+
+    int deleteByExample(UserSellerTableExample example);
+
+    int deleteByPrimaryKey(String id);
+
+    int insert(UserSellerTable record);
+
+    int insertSelective(UserSellerTable record);
+
+    List<UserSellerTable> selectByExample(UserSellerTableExample example);
+
+    UserSellerTable selectByPrimaryKey(String id);
+
+    int updateByExampleSelective(@Param("record") UserSellerTable record, @Param("example") UserSellerTableExample example);
+
+    int updateByExample(@Param("record") UserSellerTable record, @Param("example") UserSellerTableExample example);
+
+    int updateByPrimaryKeySelective(UserSellerTable record);
+
+    int updateByPrimaryKey(UserSellerTable record);
+}

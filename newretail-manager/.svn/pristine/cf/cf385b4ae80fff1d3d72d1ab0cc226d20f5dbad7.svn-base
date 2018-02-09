@@ -1,0 +1,95 @@
+package com.newretail.controller;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.newretail.common.utils.NewRetailResult;
+import com.newretail.pojo.DeliverInfoTable;
+import com.newretail.pojo.custom.DeliverInfoAddTable;
+import com.newretail.service.DeliverManagerService;
+
+@Controller
+@RequestMapping("/deliver")
+public class DeliverManageController {
+	
+	@Resource
+	private DeliverManagerService deliverManagerService;
+	
+	/**
+	 * 点击配送情况，跳转界面,查询当日配送情况
+	 * @param req
+	 * @param res
+	 * @return
+	 */
+	@RequestMapping("/toIndex")
+	@ResponseBody
+//	public List<Map<String,String>> toIndex(HttpServletRequest req,HttpServletResponse res){
+	public String toIndex(HttpServletRequest req,HttpServletResponse res){
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+		String toDay = sdf.format(date);
+		System.out.println(toDay);
+		List<Map<String,String>> list = deliverManagerService.getAllDeliverListToday(toDay);
+		System.out.println("查询···");
+		System.out.println(list);
+		req.setAttribute("list", list);
+		return "delivery";
+	}
+	
+	/**
+	 * 商家按状态+时间查询
+	 * @param req
+	 * @param res
+	 * @return
+	 */
+	@RequestMapping("/queryDeliverDetail")
+	@ResponseBody
+	public NewRetailResult queryDeliverDetail(HttpServletRequest req,HttpServletResponse res){
+		String deliverStatus = req.getParameter("deliverStatus");
+		String queryTime = req.getParameter("queryTime");
+	//	List<DeliverInfoTable> list = deliverManagerService.getDeliverListByStatus("pp");
+		List<Map<String,String>> list = deliverManagerService.getDeliverListByStatus(deliverStatus,queryTime);
+		System.out.println("list:");
+		System.out.println(list);
+		NewRetailResult result =  new NewRetailResult();
+		result.setMsg(NewRetailResult.MESSAGE_SUCCESS);
+		result.setData(list);
+		return result;
+	}
+	
+	/**
+	 * 管理员查看配送情况
+	 * @param req
+	 * @param res
+	 * @return
+	 */
+	@RequestMapping("/queryDeliverByCondition")
+	@ResponseBody
+	public List<DeliverInfoTable> queryDeliverByCondition(HttpServletRequest req,HttpServletResponse res){
+		String deliverStatus = req.getParameter("deliverStatus");
+		//店铺号 
+		String shopId = req.getParameter("shopId");
+		String orderId = req.getParameter("orderId");
+		String senderId = req.getParameter("senderId");
+		String startTime = req.getParameter("startTime");
+		String endTime = req.getParameter("endTime");
+		DeliverInfoTable conditionTable = new DeliverInfoTable();
+		conditionTable.setDeliverStatus(deliverStatus);
+		conditionTable.setSenderId(senderId);
+		conditionTable.setStartTime(startTime);
+		conditionTable.setEndTime(endTime);
+		List<DeliverInfoTable> list = deliverManagerService.getDeliverListByCondition(conditionTable);
+		return list;
+	}
+	
+}

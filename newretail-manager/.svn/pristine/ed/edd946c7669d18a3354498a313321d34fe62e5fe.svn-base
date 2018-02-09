@@ -1,0 +1,10 @@
+package com.newretail.mapper.custom;
+
+import java.util.List;
+import java.util.Map;
+
+public interface GoodsOperateMapper {
+		
+	List<Map<String, Object>> getGoodsList(String shopId);
+		
+}

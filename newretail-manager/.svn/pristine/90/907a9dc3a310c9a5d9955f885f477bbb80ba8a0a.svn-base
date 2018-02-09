@@ -1,0 +1,33 @@
+package com.newretail.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.newretail.common.utils.JqGridResult;
+import com.newretail.mapper.custom.OrderModelMapper;
+import com.newretail.service.IOrderManageService;
+
+@Service("orderManageService")
+public class OrderManageServiceImpl implements IOrderManageService {
+	@Autowired
+	private OrderModelMapper orderModelMapper;
+	
+	@Override
+	public JqGridResult getOrderList(int limitCount,Map<String, Object> param) {
+		 JqGridResult result = new JqGridResult();	
+		 List<Map<String,Object>> lists = orderModelMapper.getOrderList(param);
+		 result.setTotalCount(lists.size());		 
+		 result.setTotalPage(lists.size()%limitCount==0?(lists.size()/limitCount):(lists.size()/limitCount+1));
+		 result.setData(lists);	
+		 return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> getGoodsByOrderCode(String orderCode) {
+		return orderModelMapper.getGoodsByOrderCode(orderCode);
+	}
+
+}

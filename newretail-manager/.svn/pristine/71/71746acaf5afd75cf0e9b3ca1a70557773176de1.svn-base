@@ -1,0 +1,144 @@
+package com.newretail.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.util.TextUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.newretail.common.utils.JqGridResult;
+import com.newretail.mapper.GoodsSalesMapper;
+import com.newretail.mapper.GoodsTableMapper;
+import com.newretail.mapper.custom.GoodsCustomMapper;
+import com.newretail.pojo.GoodsSales;
+import com.newretail.pojo.GoodsTable;
+import com.newretail.pojo.GoodsTableExample;
+import com.newretail.pojo.GoodsTableExample.Criteria;
+import com.newretail.pojo.custom.GoodsTableCustom;
+import com.newretail.service.GoodsManagerService;
+
+/**
+ * 商品管理
+ * @author Yongjie
+ *
+ */
+@Service("goodsManagerService")
+public class GoodsManagerServiceImpl implements GoodsManagerService {
+	@Autowired
+	private GoodsTableMapper goodsTableMapper;
+	
+	@Autowired
+	private GoodsCustomMapper goodsCustomMapper;
+	
+	@Autowired
+	private GoodsSalesMapper goodsSalesMapper;
+	
+	Logger log = Logger.getLogger(GoodsManagerServiceImpl.class);
+	@Override
+	public int addGoodsByGoods(GoodsTable goods) throws Exception {
+		log.error("------------addGoodsByGoods-----------"+goods.toString());
+		
+		int insertSelective = goodsTableMapper.insertSelective(goods);
+		Integer goodsId = goods.getGoodsId();
+		if(goodsId!=null) {
+			GoodsSales goodsSales = new GoodsSales();
+			goodsSales.setGoodsId(goodsId);
+			goodsSales.setSales(0);
+			int insertSelective2 = goodsSalesMapper.insertSelective(goodsSales);
+		}
+		return insertSelective;
+	}
+
+	@Override
+	public int deleteGoodsById(Integer id) throws Exception {
+		return goodsTableMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public int updateGoodsById(GoodsTable goods) throws Exception {
+		return goodsTableMapper.updateByPrimaryKeySelective(goods);
+	}
+
+	@Override
+	public List<GoodsTable> findGoodsByGoods(GoodsTable goods) throws Exception {
+		GoodsTableExample goodsTableExample = new GoodsTableExample();
+		Criteria goodsCriteria = goodsTableExample.createCriteria();
+		if(goods.getGoodsId()!=null) {
+			goodsCriteria.andGoodsIdEqualTo(goods.getGoodsId());
+		}
+		if(goods.getUserId()!=null) {
+			goodsCriteria.andUserIdEqualTo(goods.getUserId());
+		}
+		if(goods.getAuditorId()!=null) {
+			goodsCriteria.andAuditorIdEqualTo(goods.getAuditorId());
+		}
+		return goodsTableMapper.selectByExample(goodsTableExample);
+	}
+
+	@Override
+	public GoodsTable findGoodsById(Integer id) throws Exception {
+		return goodsTableMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public JqGridResult<GoodsTableCustom> findGoodsByGoods(GoodsTable goods, Map<String, Integer> pages) throws Exception {
+		 String userId = goods.getUserId();
+		 GoodsTableCustom goodsCustom = new GoodsTableCustom();
+		 List<GoodsTableCustom> findGoodsByCustom = null;
+		 //设置重n,到ml列
+		 PageHelper.startPage(pages.get("page"), pages.get("rows"));
+	
+		 if(!TextUtils.isEmpty(userId)) {
+			 goodsCustom.setUserId(userId);
+		 }
+		 if(!TextUtils.isEmpty(goods.getGoodsName())) {//模糊查询
+			 goodsCustom.setGoodsName(goods.getGoodsName());
+		 }
+		 log.error("=================status==================="+pages.get("status"));
+		 log.error("=================goodsCustom==================="+goodsCustom.toString());
+		 //排序
+		 if(pages.get("status")==1) {//销量
+			 findGoodsByCustom = goodsCustomMapper.findGoodsByCustomOrderBySales(goodsCustom);
+		 }else if(pages.get("status")==2) { //按时间排序
+			 findGoodsByCustom = goodsCustomMapper.findGoodsByCustomOrderByLastTime(goodsCustom);
+		 }else {
+			 findGoodsByCustom =  goodsCustomMapper.findGoodsByCustom(goods.getUserId());
+		 }
+		 
+		 //把结果放在分页里面
+		 PageInfo<GoodsTableCustom>  pageInfo = new PageInfo<>(findGoodsByCustom);
+		 //把分页后的结果放在jqGridResult中
+		 JqGridResult<GoodsTableCustom> jqGridResult = new JqGridResult<GoodsTableCustom>();
+		 
+		 jqGridResult.setData(findGoodsByCustom);
+		 int rows=	pages.get("rows");
+		 int sums = pageInfo.getPageSize();
+		 jqGridResult.setTotalCount(sums);	
+		 jqGridResult.setTotalPage(sums%rows==0?sums/rows:(sums/rows+1));
+		
+		 List<GoodsTableCustom> list = pageInfo.getList();
+		 for(int i=0;i<list.size();i++) {
+			 if(list.get(i).getGoodsStatus().equals("0")) {
+				 list.get(i).setGoodsStatus("已创建");
+			 }else if(list.get(i).getGoodsStatus().equals("1")) {
+				 list.get(i).setGoodsStatus("审核中");
+			 }else if(list.get(i).getGoodsStatus().equals("2")) {
+				 list.get(i).setGoodsStatus("已上架");
+			 }else if(list.get(i).getGoodsStatus().equals("3")) {
+				 list.get(i).setGoodsStatus("已下架");
+			 }else if(list.get(i).getGoodsStatus().equals("4")) {
+				 list.get(i).setGoodsStatus("审核失败");
+			 }
+			 list.get(i).setId(i+1);
+		 }
+		 jqGridResult.setData(list);
+		return jqGridResult;
+	}
+	
+
+}

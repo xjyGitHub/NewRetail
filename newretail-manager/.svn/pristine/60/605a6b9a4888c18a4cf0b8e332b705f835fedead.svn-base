@@ -1,0 +1,22 @@
+package com.newretail.mapper;
+
+import com.newretail.pojo.UserAddressTable;
+import com.newretail.pojo.UserAddressTableExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface UserAddressTableMapper {
+    int countByExample(UserAddressTableExample example);
+
+    int deleteByExample(UserAddressTableExample example);
+
+    int insert(UserAddressTable record);
+
+    int insertSelective(UserAddressTable record);
+
+    List<UserAddressTable> selectByExample(UserAddressTableExample example);
+
+    int updateByExampleSelective(@Param("record") UserAddressTable record, @Param("example") UserAddressTableExample example);
+
+    int updateByExample(@Param("record") UserAddressTable record, @Param("example") UserAddressTableExample example);
+}

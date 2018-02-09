@@ -1,0 +1,57 @@
+package com.newretail.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.newretail.common.utils.JqGridResult;
+import com.newretail.common.utils.NewRetailResult;
+import com.newretail.mapper.custom.OrderModelMapper;
+import com.newretail.service.IOrderManageService;
+
+@Service("orderManageService")
+public class OrderManageServiceImpl implements IOrderManageService {
+	@Autowired
+	private OrderModelMapper orderModelMapper;
+	
+	@Override
+	public JqGridResult<Map<String,Object>> getOrderList(Map<String, Object> param) {
+		 JqGridResult<Map<String,Object>> result = new JqGridResult();	
+		 int page = (int)param.get("page");//第几页
+		 int rows = (int) param.get("rows");//一页显示的数量
+		 PageHelper.startPage(page, rows);
+		 
+		 List<Map<String,Object>> lists = orderModelMapper.getOrderList(param);
+		 for(int i = 0;i<lists.size();i++){
+			 lists.get(i).put("id", i+1);
+		 }
+		 
+		 PageInfo<Map<String,Object>>  pageInfo = new PageInfo<>(lists);//把结果放在分页里面
+		
+		
+		 //设置返回的参数
+		 result.setTotalCount((int)pageInfo.getTotal());//总数量
+		 result.setTotalPage(pageInfo.getPages());//总页数
+		 result.setData(pageInfo.getList());//查询的所有数据
+		 System.out.println(pageInfo);
+		 System.out.println("业务层："+lists);
+		 System.out.println("result:"+result);
+		 return result;
+	}
+
+	@Override
+	public NewRetailResult getGoodsByOrderCode(String orderCode) {
+		
+		List<Map<String,Object>> result = orderModelMapper.getGoodsByOrderCode(orderCode);
+		if(result.size()==0){
+			return new NewRetailResult(NewRetailResult.RESULT_FAILED,"查无数据",null);
+		}		
+		return new NewRetailResult(NewRetailResult.RESULT_SUCCESS, "", result);
+	}
+
+}

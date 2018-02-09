@@ -1,0 +1,791 @@
+package com.newretail.controller;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.newretail.common.utils.DateUtil;
+import com.newretail.common.utils.NewRetailResult;
+import com.newretail.pojo.UserAdminTable;
+import com.newretail.pojo.UserDeliveryTable;
+import com.newretail.pojo.UserSellerTable;
+import com.newretail.pojo.UserTable;
+import com.newretail.service.UserManagerService;
+/**
+ * @Description 用户管理控制器
+ * @author zhouyunfei
+ *
+ */
+@Controller
+@RequestMapping("/userManager")
+public class UserManagerController {
+
+	@Autowired
+	UserManagerService userManagerService;
+	
+//	@RequestMapping("getIndexPage")
+//	public String getIndexPage{
+//		
+//	}
+	
+	@RequestMapping("getAdminList")
+	@ResponseBody
+	public NewRetailResult getAdminList() {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			List<UserAdminTable> list=userManagerService.queryAdminList();
+			result.setData(list);
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("addAdmin")
+	@ResponseBody
+	public NewRetailResult addAdmin(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String name=request.getParameter("name");
+			String username=request.getParameter("username");
+			String password=request.getParameter("password");
+			//String catalog_jurisdiction=request.getParameter("catalog_jurisdiction");
+			if(name==null||name.trim().isEmpty()){
+				throw new Exception("name不能为空");
+			}
+			if(name==null||name.trim().isEmpty()){
+				throw new Exception("username不能为空");
+			}
+			if(name==null||name.trim().isEmpty()){
+				throw new Exception("password不能为空");
+			}
+			String id=UUID.randomUUID().toString().replace("-", "");
+			String createTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+			UserAdminTable admin=new UserAdminTable();
+			admin.setId(id);
+			admin.setName(name);
+			admin.setUsername(username);
+			admin.getPassword();
+			admin.setCreateTime(createTime);
+			admin.setUpdateTime(createTime);
+			int num=userManagerService.addAdmin(admin);
+			if(num<=0){
+				throw new Exception("添加失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("delAdmin")
+	@ResponseBody
+	public NewRetailResult delAdmin(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("管理员id不能为空");
+			}
+			int num=userManagerService.delAdminById(id);
+			if(num<=0){
+				throw new Exception("删除失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("updateAdmin")
+	@ResponseBody
+	public NewRetailResult updateAdmin(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			String name=request.getParameter("name");
+			String password=request.getParameter("password");
+			String catalog_jurisdiction=request.getParameter("catalog_jurisdiction");
+			
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("id不能为空");
+			}
+			if(name==null||name.trim().isEmpty()){
+				throw new Exception("name不能为空");
+			}
+			if(password==null||password.trim().isEmpty()){
+				throw new Exception("password不能为空");
+			}
+			String updateTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+			UserAdminTable admin=new UserAdminTable();
+			admin.setId(id);
+			admin.setName(name);
+			admin.setPassword(password);
+			admin.setUpdateTime(updateTime);
+			int num=userManagerService.updateAdmin(admin);
+			if(num<=0){
+				throw new Exception("修改失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("queryAdmin")
+	@ResponseBody
+	public NewRetailResult queryAdmin(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("id不能为空");
+			}
+			UserAdminTable admin=userManagerService.querAdminById(id);
+			if(admin==null){
+				throw new Exception("查找失败");
+			}
+			result.setData(admin);
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+//	@RequestMapping("addUser")
+//	@ResponseBody
+//	public NewRetailResult addAdmin(HttpServletRequest request) {
+//		NewRetailResult result=new NewRetailResult();
+//		try {
+//			String name=request.getParameter("name");
+//			String username=request.getParameter("username");
+//			String password=request.getParameter("password");
+//			//String catalog_jurisdiction=request.getParameter("catalog_jurisdiction");
+//			if(name==null||name.trim().isEmpty()){
+//				throw new Exception("name不能为空");
+//			}
+//			if(name==null||name.trim().isEmpty()){
+//				throw new Exception("username不能为空");
+//			}
+//			if(name==null||name.trim().isEmpty()){
+//				throw new Exception("password不能为空");
+//			}
+//			String id=UUID.randomUUID().toString().replace("-", "");
+//			String createTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+//			UserAdminTable admin=new UserAdminTable();
+//			admin.setId(id);
+//			admin.setName(name);
+//			admin.setUsername(username);
+//			admin.getPassword();
+//			admin.setCreateTime(createTime);
+//			admin.setUpdateTime(createTime);
+//			int num=userManagerService.addAdmin(admin);
+//			if(num<=0){
+//				throw new Exception("添加失败");
+//			}
+//		} catch (Exception e) {
+//			result.setStatus(NewRetailResult.RESULT_FAILED);
+//			result.setMsg(e.getMessage());
+//			return result;
+//		}
+//		
+//		return result;
+//	}
+	
+	@RequestMapping("delUser")
+	@ResponseBody
+	public NewRetailResult delUser(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("用户id不能为空");
+			}
+			int num=userManagerService.delUserById(id);
+			if(num<=0){
+				throw new Exception("删除失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("updateUser")
+	@ResponseBody
+	public NewRetailResult updateUser(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			
+			String id=request.getParameter("id");
+			String username=request.getParameter("username");
+			String password=request.getParameter("password");
+			String sex=request.getParameter("sex");
+			String identify=request.getParameter("identify");
+			String status=request.getParameter("status");
+			String phone=request.getParameter("phone");
+			String remark=request.getParameter("remark");
+			String createTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+			
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("id不能为空");
+			}
+			if(username==null||username.trim().isEmpty()){
+				throw new Exception("name不能为空");
+			}
+			if(password==null||password.trim().isEmpty()){
+				throw new Exception("password不能为空");
+			}
+			if(sex==null||sex.trim().isEmpty()){
+				throw new Exception("sex不能为空");
+			}
+			if(identify==null||identify.trim().isEmpty()){
+				throw new Exception("identify不能为空");
+			}
+			if(status==null||status.trim().isEmpty()){
+				throw new Exception("status不能为空");
+			}
+			if(phone==null||phone.trim().isEmpty()){
+				throw new Exception("phone不能为空");
+			}
+			if(remark==null||remark.trim().isEmpty()){
+				throw new Exception("remark不能为空");
+			}
+			UserTable user=new UserTable();
+			user.setId(id);
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setSex(sex);
+			user.setPhone(phone);
+			user.setStatus(status);
+			user.setRemark(remark);
+			user.setCreateTime(createTime);
+			user.setIdentify(identify);
+			int num=userManagerService.updateUser(user);
+			if(num<=0){
+				throw new Exception("修改失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("queryUser")
+	@ResponseBody
+	public NewRetailResult queryUser(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("id不能为空");
+			}
+			UserTable user=userManagerService.querUserById(id);
+			if(user==null){
+				throw new Exception("查找失败");
+			}
+			result.setData(user);
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("getSellerList")
+	@ResponseBody
+	public NewRetailResult getSellerList() {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			List<UserAdminTable> list=userManagerService.queryAdminList();
+			result.setData(list);
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("addSeller")
+	@ResponseBody
+	public NewRetailResult addSeller(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			//商家用户信息
+			String sex=request.getParameter("sex");
+			String username=request.getParameter("username");
+			String password=request.getParameter("password");
+			String phone=request.getParameter("phone");
+			String email=request.getParameter("email");
+			String remark=request.getParameter("remark");
+			
+			//商家详细信息
+			String shop_name=request.getParameter("shop_name");
+			String manager_name=request.getParameter("manager_name");
+			int authentication_status=Integer.parseInt(request.getParameter("authentication_status"));
+			String management_class=request.getParameter("management_class");
+			String pic_url=request.getParameter("pic_url");
+			String create_time=request.getParameter("create_time");
+			String update_time=request.getParameter("update_time");
+			//String catalog_jurisdiction=request.getParameter("catalog_jurisdiction");
+			if(sex==null||sex.trim().isEmpty()){
+				throw new Exception("sex不能为空");
+			}
+			if(username==null||username.trim().isEmpty()){
+				throw new Exception("username不能为空");
+			}
+			if(password==null||password.trim().isEmpty()){
+				throw new Exception("password不能为空");
+			}if(phone==null||phone.trim().isEmpty()){
+				throw new Exception("phone不能为空");
+			}
+			if(email==null||email.trim().isEmpty()){
+				throw new Exception("email不能为空");
+			}
+			if(remark==null||remark.trim().isEmpty()){
+				throw new Exception("remark不能为空");
+			}if(shop_name==null||shop_name.trim().isEmpty()){
+				throw new Exception("shop_name不能为空");
+			}
+			if(manager_name==null||manager_name.trim().isEmpty()){
+				throw new Exception("manager_name不能为空");
+			}
+			if(management_class==null||management_class.trim().isEmpty()){
+				throw new Exception("management_class不能为空");
+			}
+			String id=UUID.randomUUID().toString().replace("-", "");
+			String createTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+			
+			UserTable user=new UserTable();
+			UserSellerTable seller=new UserSellerTable();
+			user.setId(id);
+			user.setSex(sex);
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setPhone(phone);
+			user.setEmail(email);
+			user.setRemark(remark);
+			user.setStatus("1");
+			user.setIdentify("2");
+			user.setCreateTime(createTime);
+			user.setUpdateTime(createTime);
+			
+			String sellerId=UUID.randomUUID().toString().replace("-", "");
+
+			seller.setCreateTime(createTime);
+			seller.setUserId(id);
+			seller.setId(sellerId);
+			seller.setManagementClass(management_class);
+			seller.setManagerName(manager_name);
+			seller.setPicUrl(pic_url);
+			seller.setShopName(shop_name);
+			seller.setAuthenticationStatus(authentication_status);
+			int num=userManagerService.addSeller(user,seller);
+			if(num<=0){
+				throw new Exception("添加失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("delSeller")
+	@ResponseBody
+	public NewRetailResult delSeller(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("商家id不能为空");
+			}
+			UserSellerTable seller=userManagerService.querySellerById(id);
+			if(seller==null){
+				throw new Exception("商家id不存在");
+			}
+			int num=userManagerService.delSellerById(seller.getId(),seller.getUserId());
+			if(num<=0){
+				throw new Exception("删除失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("updateSeller")
+	@ResponseBody
+	public NewRetailResult updateSeller(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			//商家用户信息
+			String id=request.getParameter("id");
+			String sex=request.getParameter("sex");
+			String password=request.getParameter("password");
+			String phone=request.getParameter("phone");
+			String email=request.getParameter("email");
+			String remark=request.getParameter("remark");
+			
+			//商家详细信息
+			String shop_name=request.getParameter("shop_name");
+			String manager_name=request.getParameter("manager_name");
+			int authentication_status=Integer.parseInt(request.getParameter("authentication_status"));
+			String management_class=request.getParameter("management_class");
+			String pic_url=request.getParameter("pic_url");
+			
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("id不能为空");
+			}
+			if(sex==null||sex.trim().isEmpty()){
+				throw new Exception("sex不能为空");
+			}
+			if(password==null||password.trim().isEmpty()){
+				throw new Exception("password不能为空");
+			}if(phone==null||phone.trim().isEmpty()){
+				throw new Exception("phone不能为空");
+			}
+			if(email==null||email.trim().isEmpty()){
+				throw new Exception("email不能为空");
+			}
+			if(remark==null||remark.trim().isEmpty()){
+				throw new Exception("remark不能为空");
+			}if(shop_name==null||shop_name.trim().isEmpty()){
+				throw new Exception("shop_name不能为空");
+			}
+			if(manager_name==null||manager_name.trim().isEmpty()){
+				throw new Exception("manager_name不能为空");
+			}
+			if(management_class==null||management_class.trim().isEmpty()){
+				throw new Exception("management_class不能为空");
+			}
+			UserSellerTable sellerById=userManagerService.querySellerById(id);
+			if(sellerById==null){
+				throw new Exception("此商家不存在");
+			}
+			String updateTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+
+			UserTable user=new UserTable();
+			UserSellerTable seller=new UserSellerTable();
+			user.setId(sellerById.getUserId());
+			user.setSex(sex);
+			user.setPassword(password);
+			user.setPhone(phone);
+			user.setEmail(email);
+			user.setRemark(remark);
+			user.setStatus("1");
+			user.setIdentify("2");
+			user.setUpdateTime(updateTime);
+			
+			seller.setId(id);
+			seller.setUpdateTime(updateTime);
+			seller.setUserId(id);
+			seller.setManagementClass(management_class);
+			seller.setManagerName(manager_name);
+			seller.setPicUrl(pic_url);
+			seller.setShopName(shop_name);
+			seller.setAuthenticationStatus(authentication_status);
+			int num=userManagerService.updateSeller(user,seller);
+			if(num<=0){
+				throw new Exception("更新失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("querySeller")
+	@ResponseBody
+	public NewRetailResult querySeller(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("id不能为空");
+			}
+			UserSellerTable seller=userManagerService.querySellerById(id);
+			if(seller==null){
+				throw new Exception("查找失败");
+			}
+			result.setData(seller);
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("getDeliveryList")
+	@ResponseBody
+	public NewRetailResult getDeliveryList() {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			List<UserAdminTable> list=userManagerService.queryAdminList();
+			result.setData(list);
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("addDelivery")
+	@ResponseBody
+	public NewRetailResult addDelivery(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			//配送员用户信息
+			String sex=request.getParameter("sex");
+			String username=request.getParameter("username");
+			String password=request.getParameter("password");
+			String phone=request.getParameter("phone");
+			String email=request.getParameter("email");
+			String remark=request.getParameter("remark");
+			
+			//配送员详细信息
+			String sender_name=request.getParameter("sender_name");
+			String sender_phone=request.getParameter("sender_phone");
+			int authentication_status=Integer.parseInt(request.getParameter("authentication_status"));
+			String application_time=request.getParameter("application_time");
+			int order_count=Integer.parseInt(request.getParameter("order_count"));
+			if(sex==null||sex.trim().isEmpty()){
+				throw new Exception("sex不能为空");
+			}
+			if(username==null||username.trim().isEmpty()){
+				throw new Exception("username不能为空");
+			}
+			if(password==null||password.trim().isEmpty()){
+				throw new Exception("password不能为空");
+			}if(phone==null||phone.trim().isEmpty()){
+				throw new Exception("phone不能为空");
+			}
+			if(email==null||email.trim().isEmpty()){
+				throw new Exception("email不能为空");
+			}
+			if(remark==null||remark.trim().isEmpty()){
+				throw new Exception("remark不能为空");
+			}if(sender_name==null||sender_name.trim().isEmpty()){
+				throw new Exception("sender_name不能为空");
+			}
+			if(sender_phone==null||sender_phone.trim().isEmpty()){
+				throw new Exception("sender_phone不能为空");
+			}
+			if(application_time==null||application_time.trim().isEmpty()){
+				throw new Exception("application_time不能为空");
+			}
+			String id=UUID.randomUUID().toString().replace("-", "");
+			String createTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+			
+			UserTable user=new UserTable();
+			UserDeliveryTable delivery=new UserDeliveryTable();
+			user.setId(id);
+			user.setSex(sex);
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setPhone(phone);
+			user.setEmail(email);
+			user.setRemark(remark);
+			user.setStatus("1");
+			user.setIdentify("3");
+			user.setCreateTime(createTime);
+			user.setUpdateTime(createTime);
+			
+			String deliveryId=UUID.randomUUID().toString().replace("-", "");
+
+			delivery.setApplicationTime(application_time);
+			delivery.setAuthenticationStatus(authentication_status);
+			delivery.setCreateTime(createTime);
+			delivery.setId(deliveryId);
+			delivery.setOrderCount(order_count);
+			delivery.setUserId(id);
+			delivery.setUpdateTime(createTime);
+			delivery.setSenderPhone(sender_phone);
+			delivery.setSenderName(sender_name);
+			int num=userManagerService.addDelivery(user,delivery);
+			if(num<=0){
+				throw new Exception("添加失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("delDelivery")
+	@ResponseBody
+	public NewRetailResult delDelivery(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("配送员id不能为空");
+			}
+			UserDeliveryTable delivery=userManagerService.queryDeliveryById(id);
+			if(delivery==null){
+				throw new Exception("查找失败");
+			}
+			int num=userManagerService.delDeliveryById(delivery.getId(),delivery.getUserId());
+			if(num<=0){
+				throw new Exception("删除失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+	@RequestMapping("updateDelivery")
+	@ResponseBody
+	public NewRetailResult updateDelivery(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			//配送员用户信息
+			String sex=request.getParameter("sex");
+			String password=request.getParameter("password");
+			String phone=request.getParameter("phone");
+			String email=request.getParameter("email");
+			String remark=request.getParameter("remark");
+			
+			//配送员详细信息
+			String sender_name=request.getParameter("sender_name");
+			String sender_phone=request.getParameter("sender_phone");
+			int authentication_status=Integer.parseInt(request.getParameter("authentication_status"));
+			String application_time=request.getParameter("application_time");
+			int order_count=Integer.parseInt(request.getParameter("order_count"));
+			if(sex==null||sex.trim().isEmpty()){
+				throw new Exception("sex不能为空");
+			}
+			if(password==null||password.trim().isEmpty()){
+				throw new Exception("password不能为空");
+			}if(phone==null||phone.trim().isEmpty()){
+				throw new Exception("phone不能为空");
+			}
+			if(email==null||email.trim().isEmpty()){
+				throw new Exception("email不能为空");
+			}
+			if(remark==null||remark.trim().isEmpty()){
+				throw new Exception("remark不能为空");
+			}if(sender_name==null||sender_name.trim().isEmpty()){
+				throw new Exception("sender_name不能为空");
+			}
+			if(sender_phone==null||sender_phone.trim().isEmpty()){
+				throw new Exception("sender_phone不能为空");
+			}
+			if(application_time==null||application_time.trim().isEmpty()){
+				throw new Exception("application_time不能为空");
+			}
+			String id=UUID.randomUUID().toString().replace("-", "");
+			String updateTime=DateUtil.getNowDateTime("yyyy-MM-dd HH:mm:ss");
+			
+			UserTable user=new UserTable();
+			UserDeliveryTable delivery=new UserDeliveryTable();
+			user.setId(id);
+			user.setSex(sex);
+			user.setPassword(password);
+			user.setPhone(phone);
+			user.setEmail(email);
+			user.setRemark(remark);
+			user.setStatus("1");
+			user.setIdentify("3");
+			user.setUpdateTime(updateTime);
+			
+			String deliveryId=UUID.randomUUID().toString().replace("-", "");
+
+			delivery.setApplicationTime(application_time);
+			delivery.setAuthenticationStatus(authentication_status);
+			delivery.setId(deliveryId);
+			delivery.setOrderCount(order_count);
+			delivery.setUserId(id);
+			delivery.setUpdateTime(updateTime);
+			delivery.setSenderPhone(sender_phone);
+			delivery.setSenderName(sender_name);
+			int num=userManagerService.updateDelivery(user,delivery);
+			if(num<=0){
+				throw new Exception("添加失败");
+			}
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		
+		return result;
+	}
+	
+	@RequestMapping("queryDelivery")
+	@ResponseBody
+	public NewRetailResult queryDelivery(HttpServletRequest request) {
+		NewRetailResult result=new NewRetailResult();
+		try {
+			String id=request.getParameter("id");
+			if(id==null||id.trim().isEmpty()){
+				throw new Exception("id不能为空");
+			}
+			UserDeliveryTable delivery=userManagerService.queryDeliveryById(id);
+			if(delivery==null){
+				throw new Exception("查找失败");
+			}
+			result.setData(delivery);
+		} catch (Exception e) {
+			result.setStatus(NewRetailResult.RESULT_FAILED);
+			result.setMsg(e.getMessage());
+			return result;
+		}
+		
+		return result;
+	}
+	
+}

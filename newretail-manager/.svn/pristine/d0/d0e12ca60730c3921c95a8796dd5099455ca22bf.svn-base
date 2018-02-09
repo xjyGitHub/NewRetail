@@ -1,0 +1,8 @@
+#单点登录系统IURL
+SSO_BASE_URL = http://39.108.94.35:8080/newretail-sso
+#根据Token请求用户信息 Single sign-on system IURL
+SSO_USER_TOKEN = /user/token/
+#前台登录页面 Front desk login page
+SSO_PAGE_LOGIN = /page/login/
+#后台接登录接口 Background login interface
+SSO_USER_LOGIN = /user/login/

@@ -1,0 +1,55 @@
+package com.newretail.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.newretail.mapper.DeliverInfoTableMapper;
+import com.newretail.mapper.custom.DeliverModelMapper;
+import com.newretail.pojo.DeliverInfoTable;
+import com.newretail.pojo.custom.DeliverInfoAddTable;
+import com.newretail.service.DeliverManagerService;
+
+@Service("deliverManagerService")
+public class DeliverManagerServiceImpl implements DeliverManagerService{
+
+	@Autowired
+	private DeliverModelMapper deliverModelMapper;
+	
+	//点击配送情况，显示当日总配送情况
+	@Override
+	public List<Map<String,String>> getAllDeliverListToday(String toDay) {
+		System.out.println("执行···");
+		return deliverModelMapper.getAllDeliverListToday(toDay);
+	}
+	
+	//选择状态，按状态+时间查询
+	@Override
+	public List<Map<String,String>> getDeliverListByStatus(String deliverStatus,String queryTime) {
+	//	DeliverInfoTable deliverInfoTable = deliverInfoTableMapper.selectByPrimaryKey(deliverStatus);
+		System.out.println("执行1···");
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+		String toDay = sdf.format(date);
+		if(queryTime==null || "".equals(queryTime)){
+			queryTime = toDay;
+		}
+		return deliverModelMapper.getDeliverListByStatus(deliverStatus,queryTime);
+	}
+
+	//管理员按照条件查询
+	@Override
+	public List<DeliverInfoTable> getDeliverListByCondition(DeliverInfoTable conditionTable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
+	
+	
+}

@@ -1,0 +1,21 @@
+package com.newretail.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.newretail.pojo.Test;
+import com.newretail.service.TestUserService;
+
+@Controller
+public class TestUserController {
+	@Autowired
+	private TestUserService testUserService;
+	
+	@RequestMapping("/find")
+	@ResponseBody
+	public Test findUserName() {
+		return testUserService.findTestUserName(1);
+	}
+}

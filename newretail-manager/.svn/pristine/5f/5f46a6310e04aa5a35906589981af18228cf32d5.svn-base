@@ -1,0 +1,113 @@
+package com.newretail.pojo;
+
+public class OrderTable {
+    private String orderId;
+
+    private String merchantId;
+
+    private String orderCode;
+
+    private String orderTime;
+
+    private String payStatus;
+
+    private String deliverStatus;
+
+    private String orderStatus;
+
+    private Long orderAmount;
+
+    private String receiverId;
+
+    private String deliverAddressSeq;
+
+    private String deliverType;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId == null ? null : orderId.trim();
+    }
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId == null ? null : merchantId.trim();
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode == null ? null : orderCode.trim();
+    }
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime == null ? null : orderTime.trim();
+    }
+
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus == null ? null : payStatus.trim();
+    }
+
+    public String getDeliverStatus() {
+        return deliverStatus;
+    }
+
+    public void setDeliverStatus(String deliverStatus) {
+        this.deliverStatus = deliverStatus == null ? null : deliverStatus.trim();
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus == null ? null : orderStatus.trim();
+    }
+
+    public Long getOrderAmount() {
+        return orderAmount;
+    }
+
+    public void setOrderAmount(Long orderAmount) {
+        this.orderAmount = orderAmount;
+    }
+
+    public String getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId == null ? null : receiverId.trim();
+    }
+
+    public String getDeliverAddressSeq() {
+        return deliverAddressSeq;
+    }
+
+    public void setDeliverAddressSeq(String deliverAddressSeq) {
+        this.deliverAddressSeq = deliverAddressSeq == null ? null : deliverAddressSeq.trim();
+    }
+
+    public String getDeliverType() {
+        return deliverType;
+    }
+
+    public void setDeliverType(String deliverType) {
+        this.deliverType = deliverType == null ? null : deliverType.trim();
+    }
+}

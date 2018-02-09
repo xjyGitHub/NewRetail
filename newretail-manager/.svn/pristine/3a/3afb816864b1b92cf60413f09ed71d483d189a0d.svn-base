@@ -1,0 +1,27 @@
+package com.newretail.mapper.custom;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.newretail.pojo.DeliverInfoTable;
+import com.newretail.pojo.custom.DeliverInfoAddTable;
+
+public interface DeliverModelMapper {
+
+	/**
+	 * 点击配送情况，查询当日订单(按时间倒序排列)
+	 */
+	List<Map<String,String>> getAllDeliverListToday(@Param(value="queryTime")String toDay);
+	
+	/**
+	 * 商家按配送状态+时间查询
+	 */
+	List<Map<String,String>> getDeliverListByStatus(@Param(value="deliverStatus")String deliverStatus,@Param(value="queryTime")String queryTime);
+	 
+	/**
+	 * 管理员按照条件查询
+	 */
+	List<DeliverInfoTable> getDeliverListByCondition(DeliverInfoTable conditionTable);
+}

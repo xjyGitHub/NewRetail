@@ -1,0 +1,30 @@
+package com.newretail.mapper;
+
+import com.newretail.pojo.MerchantTable;
+import com.newretail.pojo.MerchantTableExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface MerchantTableMapper {
+    int countByExample(MerchantTableExample example);
+
+    int deleteByExample(MerchantTableExample example);
+
+    int deleteByPrimaryKey(String merchantId);
+
+    int insert(MerchantTable record);
+
+    int insertSelective(MerchantTable record);
+
+    List<MerchantTable> selectByExample(MerchantTableExample example);
+
+    MerchantTable selectByPrimaryKey(String merchantId);
+
+    int updateByExampleSelective(@Param("record") MerchantTable record, @Param("example") MerchantTableExample example);
+
+    int updateByExample(@Param("record") MerchantTable record, @Param("example") MerchantTableExample example);
+
+    int updateByPrimaryKeySelective(MerchantTable record);
+
+    int updateByPrimaryKey(MerchantTable record);
+}

@@ -1,0 +1,186 @@
+/**
+ * Project Name:newretail-manager-pojo
+ * File Name:GoodsTableCustom.java
+ * Package Name:com.newretail.pojo.custom
+ * Date:2017年10月18日下午11:54:01
+ * Copyright (c) 2017, campuspp.com All Rights Reserved.
+ *
+*/
+
+package com.newretail.pojo.custom;
+/**
+ * ClassName:GoodsTableCustom <br/>
+ * Function: TODO ADD FUNCTION. <br/>
+ * Reason:	 TODO ADD REASON. <br/>
+ * Date:     2017年10月18日 下午11:54:01 <br/>
+ * @author   Yongjie
+ * @version  
+ * @since    JDK 1.8
+ * @see 	 
+ */
+public class GoodsTableCustom {
+	 private Integer goodsId;
+
+	    private String goodsName;
+
+	    private String goodsPhoto;
+
+	    private String goodsPrice;
+
+	    private String discount;
+
+	    private String goodsType;
+
+	    private String startime;
+
+	    private String lastime;
+
+	    private Integer stock;
+
+	    private String goodsStatus;
+
+	    private String userId;
+
+	    private String auditorId;
+	    
+		private String sales;
+	    public GoodsTableCustom() {
+			
+			super();
+			// TODO Auto-generated constructor stub
+			
+		}
+
+		public GoodsTableCustom(Integer goodsId, String goodsName, String goodsPhoto, String goodsPrice,
+				String discount, String goodsType, String startime, String lastime, Integer stock, String goodsStatus,
+				String userId, String auditorId, String sales) {
+			super();
+			this.goodsId = goodsId;
+			this.goodsName = goodsName;
+			this.goodsPhoto = goodsPhoto;
+			this.goodsPrice = goodsPrice;
+			this.discount = discount;
+			this.goodsType = goodsType;
+			this.startime = startime;
+			this.lastime = lastime;
+			this.stock = stock;
+			this.goodsStatus = goodsStatus;
+			this.userId = userId;
+			this.auditorId = auditorId;
+			this.sales = sales;
+		}
+
+		@Override
+		public String toString() {
+			return "GoodsTableCustom [goodsId=" + goodsId + ", goodsName=" + goodsName + ", goodsPhoto=" + goodsPhoto
+					+ ", goodsPrice=" + goodsPrice + ", discount=" + discount + ", goodsType=" + goodsType
+					+ ", startime=" + startime + ", lastime=" + lastime + ", stock=" + stock + ", goodsStatus="
+					+ goodsStatus + ", userId=" + userId + ", auditorId=" + auditorId + ", sales=" + sales + "]";
+		}
+
+		public String getSales() {
+			return sales;
+		}
+
+		public void setSales(String sales) {
+			this.sales = sales;
+		}
+
+	
+	    public Integer getGoodsId() {
+	        return goodsId;
+	    }
+
+	    public void setGoodsId(Integer goodsId) {
+	        this.goodsId = goodsId;
+	    }
+
+	    public String getGoodsName() {
+	        return goodsName;
+	    }
+
+	    public void setGoodsName(String goodsName) {
+	        this.goodsName = goodsName == null ? null : goodsName.trim();
+	    }
+
+	    public String getGoodsPhoto() {
+	        return goodsPhoto;
+	    }
+
+	    public void setGoodsPhoto(String goodsPhoto) {
+	        this.goodsPhoto = goodsPhoto == null ? null : goodsPhoto.trim();
+	    }
+
+	    public String getGoodsPrice() {
+	        return goodsPrice;
+	    }
+
+	    public void setGoodsPrice(String goodsPrice) {
+	        this.goodsPrice = goodsPrice == null ? null : goodsPrice.trim();
+	    }
+
+	    public String getDiscount() {
+	        return discount;
+	    }
+
+	    public void setDiscount(String discount) {
+	        this.discount = discount == null ? null : discount.trim();
+	    }
+
+	    public String getGoodsType() {
+	        return goodsType;
+	    }
+
+	    public void setGoodsType(String goodsType) {
+	        this.goodsType = goodsType == null ? null : goodsType.trim();
+	    }
+
+	    public String getStartime() {
+	        return startime;
+	    }
+
+	    public void setStartime(String startime) {
+	        this.startime = startime == null ? null : startime.trim();
+	    }
+
+	    public String getLastime() {
+	        return lastime;
+	    }
+
+	    public void setLastime(String lastime) {
+	        this.lastime = lastime == null ? null : lastime.trim();
+	    }
+
+	    public Integer getStock() {
+	        return stock;
+	    }
+
+	    public void setStock(Integer stock) {
+	        this.stock = stock;
+	    }
+
+	    public String getGoodsStatus() {
+	        return goodsStatus;
+	    }
+
+	    public void setGoodsStatus(String goodsStatus) {
+	        this.goodsStatus = goodsStatus == null ? null : goodsStatus.trim();
+	    }
+
+	    public String getUserId() {
+	        return userId;
+	    }
+
+	    public void setUserId(String userId) {
+	        this.userId = userId == null ? null : userId.trim();
+	    }
+
+	    public String getAuditorId() {
+	        return auditorId;
+	    }
+
+	    public void setAuditorId(String auditorId) {
+	        this.auditorId = auditorId == null ? null : auditorId.trim();
+	    }
+}
+

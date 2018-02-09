@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newretail.mapper.MerchantTableMapper" >
+  <resultMap id="BaseResultMap" type="com.newretail.pojo.MerchantTable" >
+    <id column="merchant_id" property="merchantId" jdbcType="VARCHAR" />
+    <result column="merchant_name" property="merchantName" jdbcType="VARCHAR" />
+    <result column="merchant_time" property="merchantTime" jdbcType="VARCHAR" />
+    <result column="auditor_id" property="auditorId" jdbcType="VARCHAR" />
+    <result column="merchant_rating" property="merchantRating" jdbcType="VARCHAR" />
+    <result column="merchant_count" property="merchantCount" jdbcType="VARCHAR" />
+    <result column="merchant_pwd" property="merchantPwd" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    merchant_id, merchant_name, merchant_time, auditor_id, merchant_rating, merchant_count, 
+    merchant_pwd
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.newretail.pojo.MerchantTableExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from merchant_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from merchant_table
+    where merchant_id = #{merchantId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from merchant_table
+    where merchant_id = #{merchantId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.newretail.pojo.MerchantTableExample" >
+    delete from merchant_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.newretail.pojo.MerchantTable" >
+    insert into merchant_table (merchant_id, merchant_name, merchant_time, 
+      auditor_id, merchant_rating, merchant_count, 
+      merchant_pwd)
+    values (#{merchantId,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, #{merchantTime,jdbcType=VARCHAR}, 
+      #{auditorId,jdbcType=VARCHAR}, #{merchantRating,jdbcType=VARCHAR}, #{merchantCount,jdbcType=VARCHAR}, 
+      #{merchantPwd,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.newretail.pojo.MerchantTable" >
+    insert into merchant_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="merchantId != null" >
+        merchant_id,
+      </if>
+      <if test="merchantName != null" >
+        merchant_name,
+      </if>
+      <if test="merchantTime != null" >
+        merchant_time,
+      </if>
+      <if test="auditorId != null" >
+        auditor_id,
+      </if>
+      <if test="merchantRating != null" >
+        merchant_rating,
+      </if>
+      <if test="merchantCount != null" >
+        merchant_count,
+      </if>
+      <if test="merchantPwd != null" >
+        merchant_pwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="merchantId != null" >
+        #{merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null" >
+        #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantTime != null" >
+        #{merchantTime,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorId != null" >
+        #{auditorId,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantRating != null" >
+        #{merchantRating,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCount != null" >
+        #{merchantCount,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantPwd != null" >
+        #{merchantPwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.newretail.pojo.MerchantTableExample" resultType="java.lang.Integer" >
+    select count(*) from merchant_table
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update merchant_table
+    <set >
+      <if test="record.merchantId != null" >
+        merchant_id = #{record.merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantName != null" >
+        merchant_name = #{record.merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantTime != null" >
+        merchant_time = #{record.merchantTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditorId != null" >
+        auditor_id = #{record.auditorId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantRating != null" >
+        merchant_rating = #{record.merchantRating,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantCount != null" >
+        merchant_count = #{record.merchantCount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantPwd != null" >
+        merchant_pwd = #{record.merchantPwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update merchant_table
+    set merchant_id = #{record.merchantId,jdbcType=VARCHAR},
+      merchant_name = #{record.merchantName,jdbcType=VARCHAR},
+      merchant_time = #{record.merchantTime,jdbcType=VARCHAR},
+      auditor_id = #{record.auditorId,jdbcType=VARCHAR},
+      merchant_rating = #{record.merchantRating,jdbcType=VARCHAR},
+      merchant_count = #{record.merchantCount,jdbcType=VARCHAR},
+      merchant_pwd = #{record.merchantPwd,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.newretail.pojo.MerchantTable" >
+    update merchant_table
+    <set >
+      <if test="merchantName != null" >
+        merchant_name = #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantTime != null" >
+        merchant_time = #{merchantTime,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorId != null" >
+        auditor_id = #{auditorId,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantRating != null" >
+        merchant_rating = #{merchantRating,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCount != null" >
+        merchant_count = #{merchantCount,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantPwd != null" >
+        merchant_pwd = #{merchantPwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where merchant_id = #{merchantId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.newretail.pojo.MerchantTable" >
+    update merchant_table
+    set merchant_name = #{merchantName,jdbcType=VARCHAR},
+      merchant_time = #{merchantTime,jdbcType=VARCHAR},
+      auditor_id = #{auditorId,jdbcType=VARCHAR},
+      merchant_rating = #{merchantRating,jdbcType=VARCHAR},
+      merchant_count = #{merchantCount,jdbcType=VARCHAR},
+      merchant_pwd = #{merchantPwd,jdbcType=VARCHAR}
+    where merchant_id = #{merchantId,jdbcType=VARCHAR}
+  </update>
+</mapper>

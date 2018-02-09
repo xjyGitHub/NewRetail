@@ -1,0 +1,29 @@
+/**
+ * 
+ */
+package com.newretail.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.newretail.mapper.TestMapper;
+import com.newretail.pojo.Test;
+import com.newretail.pojo.TestExample;
+import com.newretail.service.TestUserService;;
+
+/**
+ * @author Yongjie
+ *
+ */
+@Service("testUserService")
+public class TestUserServiceImpl implements TestUserService {
+	@Autowired
+	private TestMapper testMapper;
+
+	@Override
+	public Test findTestUserName(int id) {
+	
+		Test test = testMapper.selectByPrimaryKey(id);
+		return test;
+	}
+	
+}

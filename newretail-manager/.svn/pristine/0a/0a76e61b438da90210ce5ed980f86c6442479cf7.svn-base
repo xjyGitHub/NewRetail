@@ -1,0 +1,14 @@
+package com.newretail.mapper.custom;
+
+import java.util.List;
+import java.util.Map;
+
+public interface OrderModelMapper {
+	
+	List<Map<String, Object>> getOrderList(Map<String, Object> param);
+	
+	List<Map<String, Object>> getGoodsByOrderCode(String orderCode);
+	
+	int getOrderNum(Map<String, Object> param);
+	
+}

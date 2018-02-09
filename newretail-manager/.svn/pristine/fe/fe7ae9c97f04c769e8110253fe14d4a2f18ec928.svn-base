@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newretail.mapper.custom.OrderModelMapper" >
+  
+ <select id="getOrderList" parameterType="map" resultType="map">
+ 	select 
+		o.order_id "orderId",o.merchant_id "merchantId",o.order_code "orderCode",o.order_time "orderTime",
+		o.pay_status "payStatus",o.deliver_status "deliverStatus",o.deliver_type "deliverType",o.order_status "orderStatus",
+		o.order_amount "orderAmount",o.receiver_id "receiverId",d.deliver_address "deliverAddress",d.receiver_phone "receiverPhone",
+		o.user_id "userId"
+	from
+		order_table o,deliver_address_table d,user_table u
+	<where>
+		d.user_id = u.id and d.deliver_address_seq=o.deliver_address_seq
+		<if test="orderCode != null and orderCode != ''">
+			and o.order_code=#{orderCode}
+		</if>
+		<if test="orderTime != null and orderTime != ''">
+			and o.order_time=#{orderTime} 
+		</if>
+		<if test="orderStatus != null and orderStatus != ''">
+			and o.order_status =#{orderStatus}
+		</if>
+		<if test="deliverStatus != null and deliverStatus != ''">
+			and o.deliver_status=#{deliverStatus}
+		</if>
+		<if test="deliverType != null and deliverType != ''">
+			and o.deliver_type=#{deliverType}
+		</if>
+		<if test="merchantId != null and merchantId != ''">
+			and o.merchant_id=#{merchantId}
+		</if>
+	</where>
+		    
+ </select>
+ 
+ <select id="getGoodsByOrderCode" parameterType="String" resultType="map">
+	select 
+		goods_id "goodsId",goods_num "goodsNum",goods_price "goodsPrice" 
+	from 
+		order_to_goods_table
+	where 
+		order_code=#{orderCode}
+ </select>
+ 
+</mapper>

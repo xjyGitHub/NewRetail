@@ -1,0 +1,60 @@
+package com.newretail.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.newretail.mapper.GoodsTableMapper;
+import com.newretail.pojo.GoodsTable;
+import com.newretail.pojo.GoodsTableExample;
+import com.newretail.pojo.GoodsTableExample.Criteria;
+import com.newretail.service.GoodsManagerService;
+
+/**
+ * 商品管理
+ * @author Yongjie
+ *
+ */
+@Service("soodsManagerService")
+public class GoodsManagerServiceImpl implements GoodsManagerService {
+
+	@Autowired
+	private GoodsTableMapper goodsTableMapper;
+	@Override
+	public int addGoodsByGoods(GoodsTable goods) throws Exception {
+		return goodsTableMapper.insertSelective(goods);
+	}
+
+	@Override
+	public int deleteGoodsById(String id) throws Exception {
+		return goodsTableMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public int updateGoodsById(GoodsTable goods) throws Exception {
+		return goodsTableMapper.updateByPrimaryKeySelective(goods);
+	}
+
+	@Override
+	public List<GoodsTable> findGoodsByGoods(GoodsTable goods) throws Exception {
+		GoodsTableExample goodsTableExample = new GoodsTableExample();
+		Criteria goodsCriteria = goodsTableExample.createCriteria();
+		if(goods.getGoodsId()!=null) {
+			goodsCriteria.andGoodsIdEqualTo(goods.getGoodsId());
+		}
+		if(goods.getShopId()!=null) {
+			goodsCriteria.andShopIdEqualTo(goods.getShopId());
+		}
+		if(goods.getAuditorId()!=null) {
+			goodsCriteria.andAuditorIdEqualTo(goods.getAuditorId());
+		}
+		return goodsTableMapper.selectByExample(goodsTableExample);
+	}
+
+	@Override
+	public GoodsTable findGoodsById(String id) throws Exception {
+		return goodsTableMapper.selectByPrimaryKey(id);
+	}
+
+}

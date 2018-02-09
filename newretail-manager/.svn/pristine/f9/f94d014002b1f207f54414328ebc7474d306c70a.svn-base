@@ -1,0 +1,30 @@
+package com.newretail.mapper;
+
+import com.newretail.pojo.GoodsTable;
+import com.newretail.pojo.GoodsTableExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
+public interface GoodsTableMapper {
+    int countByExample(GoodsTableExample example);
+
+    int deleteByExample(GoodsTableExample example);
+
+    int deleteByPrimaryKey(String goodsId);
+
+    int insert(GoodsTable record);
+
+    int insertSelective(GoodsTable record);
+
+    List<GoodsTable> selectByExample(GoodsTableExample example);
+
+    GoodsTable selectByPrimaryKey(String goodsId);
+
+    int updateByExampleSelective(@Param("record") GoodsTable record, @Param("example") GoodsTableExample example);
+
+    int updateByExample(@Param("record") GoodsTable record, @Param("example") GoodsTableExample example);
+
+    int updateByPrimaryKeySelective(GoodsTable record);
+
+    int updateByPrimaryKey(GoodsTable record);
+}

@@ -1,0 +1,39 @@
+package com.newretail.controller.app;
+
+import com.newretail.pojo.app.OrderItem;
+import com.newretail.pojo.custom.AppResponseResult;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+/**
+ * 订单接口
+ * Created with YongjieWu.
+ * Description:
+ * User: Yongjie
+ * Date: 2018-01-05
+ * Time: 17:36
+ */
+public interface AppOrderInterfaceController {
+
+    /**
+     * 查询订单列表接口
+     * @param token
+     * @param page
+     * @param pageSize
+     * @param status
+     * @param merchantId
+     * @return
+     */
+    public AppResponseResult<List<OrderItem>> getOrderMerchantList(String token,int page,int pageSize,int status,          String merchantId);
+
+    /**
+     * 修改订单状态
+     * @param token
+     * @param orderId
+     * @param status
+     * @return
+     */
+    public AppResponseResult orderConfirmByMerchant(String token, String orderId, int status);
+
+}

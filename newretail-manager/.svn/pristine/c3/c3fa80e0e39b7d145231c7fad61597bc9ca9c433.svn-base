@@ -1,0 +1,219 @@
+package com.newretail.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.newretail.common.utils.CookieUtils;
+import com.newretail.common.utils.EncrypationUtils;
+import com.newretail.common.utils.HttpClientUtil;
+import com.newretail.common.utils.JsonUtils;
+import com.newretail.common.utils.NewRetailResult;
+import com.newretail.common.utils.PrimaryKeyUtils;
+import com.newretail.common.utils.TimeUtils;
+import com.newretail.common.utils.ValidatorUtils;
+import com.newretail.pojo.UserAuthenticationTable;
+import com.newretail.pojo.UserSellerTable;
+import com.newretail.pojo.UserTable;
+import com.newretail.service.UserService;
+
+@Controller
+@RequestMapping("/user")
+public class UserController {
+	
+	@Autowired
+	private UserService userService;
+	/**
+	 * 登陆
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping("/login")
+	public @ResponseBody NewRetailResult loginUser(HttpServletRequest request,HttpServletResponse response) {
+		UserTable userTable = new UserTable();
+		String username = request.getParameter("username").toString();
+		String password = request.getParameter("password").toString();
+		String md5Hex = EncrypationUtils.md5Hex(password);
+		if(username==null||username=="") {
+			return NewRetailResult.build(0, "账号不能空");
+		}
+		if(password==null||password=="") {
+			return NewRetailResult.build(0, "请输入密码");
+		}
+		if(ValidatorUtils.isPhone(username)) {
+			userTable.setPhone(username);
+		}
+		if(ValidatorUtils.isEmail(username)) {
+			userTable.setEmail(username);
+		}
+		
+		try {
+			CookieUtils.deleteCookie(request, response, "NEWRETAIL_LOGIN");
+		} catch (Exception e1) {
+			
+			
+		}
+		HashMap<String, String> hashMap = new HashMap<String,String>();
+		hashMap.put("username", username);
+		hashMap.put("password",password);
+		Logger log = Logger.getLogger(UserController.class);
+		String doPost;
+		try {
+			doPost = HttpClientUtil.doPost("http://39.108.94.35:8080/newretail-sso/user/login", hashMap);
+			NewRetailResult jsonToPojo = JsonUtils.jsonToPojo(doPost, NewRetailResult.class);
+			String token = jsonToPojo.getData().toString();
+			//添加写cookie的逻辑，cookie的有效期是关闭浏览器就失效。
+			CookieUtils.setCookie(request, response, "NEWRETAIL_LOGIN", token, true);
+			String cookieValue = CookieUtils.getCookieValue(request, "NEWRETAIL_LOGIN");
+			return NewRetailResult.build(200, "登陆成功",token);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return NewRetailResult.build(0, "账号或密码错误",null);
+			
+		}
+		
+		/*try {
+			List<UserTable> users= userService.findUser(userTable);
+			if(users!=null&&users.size()>0) {
+				UserTable u = users.get(0);
+				String password2 = u.getPassword();
+				if(md5Hex.equals(password2)) {
+					HttpSession httpSession = request.getSession();
+					
+					httpSession.setAttribute("userId", users.get(0).getId());
+					return NewRetailResult.ok();
+				}else {
+					return NewRetailResult.build(0, "账号或密码错误");
+				}
+			}else {
+				return NewRetailResult.build(0, "账号错误");
+			}
+		}catch(NullPointerException n){
+			return NewRetailResult.build(0, "你尚未注册，请先去注册");
+		}catch (Exception e) {
+			return NewRetailResult.build(0, "账号或密码错误");
+		}*/
+		
+	}
+
+	/**
+	 * 注册
+	 * 
+	 * @param forms
+	 * @return
+	 */
+	@RequestMapping("register")
+	@ResponseBody
+	public NewRetailResult registerUser(@RequestBody Map<String, Object> forms) {
+
+		String mUsername = forms.get("mUsername").toString();
+		String mPassword = forms.get("mPassword").toString();
+		String mSex = forms.get("mSex").toString();
+		String mPhone = forms.get("mPhone").toString();
+		String mEmail = forms.get("mEmail").toString();
+		String mPhoneVildate = forms.get("mPhoneVildate").toString();
+		String mShopName = forms.get("mShopName").toString();
+		String mManagerClass = forms.get("mManagerClass").toString();
+		String mManagerName = forms.get("mManagerName").toString();
+		String mIdCard = forms.get("mIdCard").toString();
+		String mLicense = forms.get("mLicense").toString();
+		String mShopImageUrl = forms.get("mShopImageUrl").toString();
+		String mIdCardImage1Url = forms.get("mIdCardImage1Url").toString();
+		String mIdCardImage2Url = forms.get("mIdCardImage2Url").toString();
+		String mIdCardImage3Url = forms.get("mIdCardImage3Url").toString();
+		String mLicenseImageUrl = forms.get("mLicenseImageUrl").toString();
+		
+		
+		UserTable user = new UserTable();
+		String userId = PrimaryKeyUtils.getLocalTrmSeqNum();
+		user.setId(userId);
+		user.setUsername(mUsername);
+		user.setSex(mSex);
+		user.setPassword(EncrypationUtils.md5Hex(mPassword));
+		user.setPhone(mPhone);
+		user.setEmail(mEmail);
+		user.setIdentify("2");
+		user.setStatus("1");
+		user.setRemark("创建");
+		user.setDefaultDeliverAddressSeq("1");
+		String time = TimeUtils.getTime();
+		user.setCreateTime(time);
+		user.setUpdateTime(time);
+
+		//商家信息
+		UserSellerTable userSeller = new UserSellerTable();
+		userSeller.setId(PrimaryKeyUtils.getLocalTrmSeqNum());
+		userSeller.setShopName(mShopName);
+		userSeller.setManagerName(mManagerName);
+		userSeller.setAuthenticationStatus(0);
+		userSeller.setManagementClass(mManagerClass);
+		userSeller.setPicUrl(mShopImageUrl);
+		userSeller.setCreateTime(time);
+		userSeller.setUpdateTime(time);
+		userSeller.setUserId(userId);
+		UserAuthenticationTable userAuthentication = new UserAuthenticationTable();
+			userAuthentication.setId(PrimaryKeyUtils.getLocalTrmSeqNum());
+		    userAuthentication.setUserId(userId);
+		    userAuthentication.setIdCard(mIdCard);
+		    userAuthentication.setIdentity(0);
+		    userAuthentication.setIdCardPositiveUrl(mIdCardImage1Url);
+		    userAuthentication.setIdCardNegativeUrl(mIdCardImage2Url);
+		    userAuthentication.setHandheldIdCardUrl(mIdCardImage3Url);
+		  /*  private String studentCardId;
+		    private String studentCardUrl;*/
+		    userAuthentication.setBusinessLicenseId(mLicense);
+		    userAuthentication.setBusinessLicenseUrl(mLicenseImageUrl);
+		    userAuthentication.setAuthenticationStatus(0);
+		    userAuthentication.setAuthenticationStyle(2);
+		    userAuthentication.setRemark("商家认证");
+		    UserTable t1 = new UserTable();
+		    t1.setPhone(mPhone);
+		    try {
+				List<UserTable> ls1 = userService.findUser(t1);
+				if(ls1!=null&&ls1.size()>0) {
+					return NewRetailResult.build(0, "你的手机号码已被注册！");
+				}
+			} catch (Exception e1) {
+				
+			}
+		    UserTable t2 = new UserTable();
+		    t2.setEmail(mEmail);;
+		    try {
+				List<UserTable> ls1 = userService.findUser(t2);
+				if(ls1!=null&&ls1.size()>0) {
+					return NewRetailResult.build(0, "你的邮箱已被注册！");
+				}
+			} catch (Exception e1) {
+				
+			}
+		    
+		try {
+			int addUser = userService.addUser(user, userSeller, userAuthentication);
+			if(addUser>0) {
+				return NewRetailResult.ok();
+			}
+			
+		} catch (Exception e) {
+			return NewRetailResult.build(0, e.getMessage());
+		}
+		return NewRetailResult.ok();
+	}
+	public static boolean isEmpty(String str) {
+		if(str!=null&&str!="") {
+			return true;
+		}
+		return false;
+	}
+}

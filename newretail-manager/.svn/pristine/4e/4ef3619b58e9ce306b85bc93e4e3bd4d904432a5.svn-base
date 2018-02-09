@@ -1,0 +1,27 @@
+var index=function(){
+	
+	function init(){
+		bindEvent();
+	}
+	function bindEvent(){
+		$("#user").bind('click',function(){
+			$("#contentPage").load("getUserManagerPage?page=userManager");
+		});
+		$("#admin").bind('click',function(){
+			$("#contentPage").load("getUserManagerPage?page=adminManager");
+		});
+		$("#seller").bind('click',function(){
+			$("#contentPage").load("getUserManagerPage?page=sellerManager");
+		});
+		$("#delivery").bind('click',function(){
+			$("#contentPage").load("getUserManagerPage?page=deliveryManager");
+		});
+	}
+	var exports={
+		'init':init	
+	};
+	return exports;
+}();
+$(function(){
+	index.init();
+})

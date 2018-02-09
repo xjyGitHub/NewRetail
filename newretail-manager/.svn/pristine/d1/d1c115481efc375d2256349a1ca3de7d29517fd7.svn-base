@@ -1,0 +1,123 @@
+package com.newretail.pojo;
+
+public class GoodsTable {
+    private String goodsId;
+
+    private String goodsName;
+
+    private String goodsPhoto;
+
+    private Long goodsPrice;
+
+    private Long discount;
+
+    private String goodsType;
+
+    private Integer amount;
+
+    private String startime;
+
+    private String lastime;
+
+    private Integer stock;
+
+    private String shopId;
+
+    private String auditorId;
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId == null ? null : goodsId.trim();
+    }
+
+    public String getGoodsName() {
+        return goodsName;
+    }
+
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName == null ? null : goodsName.trim();
+    }
+
+    public String getGoodsPhoto() {
+        return goodsPhoto;
+    }
+
+    public void setGoodsPhoto(String goodsPhoto) {
+        this.goodsPhoto = goodsPhoto == null ? null : goodsPhoto.trim();
+    }
+
+    public Long getGoodsPrice() {
+        return goodsPrice;
+    }
+
+    public void setGoodsPrice(Long goodsPrice) {
+        this.goodsPrice = goodsPrice;
+    }
+
+    public Long getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Long discount) {
+        this.discount = discount;
+    }
+
+    public String getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(String goodsType) {
+        this.goodsType = goodsType == null ? null : goodsType.trim();
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public String getStartime() {
+        return startime;
+    }
+
+    public void setStartime(String startime) {
+        this.startime = startime == null ? null : startime.trim();
+    }
+
+    public String getLastime() {
+        return lastime;
+    }
+
+    public void setLastime(String lastime) {
+        this.lastime = lastime == null ? null : lastime.trim();
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId == null ? null : shopId.trim();
+    }
+
+    public String getAuditorId() {
+        return auditorId;
+    }
+
+    public void setAuditorId(String auditorId) {
+        this.auditorId = auditorId == null ? null : auditorId.trim();
+    }
+}

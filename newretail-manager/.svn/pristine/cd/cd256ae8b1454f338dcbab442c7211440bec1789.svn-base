@@ -1,0 +1,83 @@
+package com.newretail.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.newretail.mapper.GoodsTableMapper;
+import com.newretail.pojo.GoodsTable;
+import com.newretail.pojo.GoodsTableExample;
+import com.newretail.pojo.GoodsTableExample.Criteria;
+import com.newretail.service.GoodsManagerService;
+
+/**
+ * 商品管理
+ * @author Yongjie
+ *
+ */
+@Service("goodsManagerService")
+public class GoodsManagerServiceImpl implements GoodsManagerService {
+
+	@Autowired
+	private GoodsTableMapper goodsTableMapper;
+	@Override
+	public int addGoodsByGoods(GoodsTable goods) throws Exception {
+		return goodsTableMapper.insertSelective(goods);
+	}
+
+	@Override
+	public int deleteGoodsById(Integer id) throws Exception {
+		return goodsTableMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public int updateGoodsById(GoodsTable goods) throws Exception {
+		return goodsTableMapper.updateByPrimaryKeySelective(goods);
+	}
+
+	@Override
+	public List<GoodsTable> findGoodsByGoods(GoodsTable goods) throws Exception {
+		GoodsTableExample goodsTableExample = new GoodsTableExample();
+		Criteria goodsCriteria = goodsTableExample.createCriteria();
+		if(goods.getGoodsId()!=null) {
+			goodsCriteria.andGoodsIdEqualTo(goods.getGoodsId());
+		}
+		if(goods.getSellerId()!=null) {
+			goodsCriteria.andSellerIdEqualTo(goods.getSellerId());
+		}
+		if(goods.getAuditorId()!=null) {
+			goodsCriteria.andAuditorIdEqualTo(goods.getAuditorId());
+		}
+		return goodsTableMapper.selectByExample(goodsTableExample);
+	}
+
+	@Override
+	public GoodsTable findGoodsById(Integer id) throws Exception {
+		return goodsTableMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<GoodsTable> findGoodsByGoods(GoodsTable goods, Map<String, Integer> page) throws Exception {
+		GoodsTableExample goodsTableExample = new GoodsTableExample();
+		Criteria createCriteria = goodsTableExample.createCriteria();
+		if(goods.getGoodsPrice()!=null&&goods.getGoodsPrice()!="")
+			createCriteria.andGoodsPriceEqualTo(goods.getGoodsPrice());
+		if(goods.getGoodsName()!=null&&goods.getGoodsName()!=""){
+			createCriteria.andGoodsNameEqualTo(goods.getGoodsName());
+		if(goods.getGoodsType()!=null&&goods.getGoodsType()!="") {
+			createCriteria.andGoodsTypeEqualTo(goods.getGoodsType());
+			}
+		}
+		
+		PageHelper.startPage(page.get("page"), page.get("rows"));
+		List<GoodsTable> goodsList = goodsTableMapper.selectByExample(goodsTableExample);
+		PageInfo<GoodsTable>  pageInfo = new PageInfo<>(goodsList);
+		List<GoodsTable> list = pageInfo.getList();
+		return list;
+	}
+
+}
